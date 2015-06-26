@@ -1,4 +1,4 @@
-var DOMAIN = 'http://www.gracepointcoppell.org'
+var DOMAIN = 'http://www.firstamarillo.org'
 //DEVELOPMENT
 var devtest = /localhost/.test(window.location.hostname);
 if (devtest) {
@@ -12,8 +12,8 @@ if (devtest) {
 }
 
 var onclickFix = function (html) {
-	html = html.replace(/href=\"\//ig, 'href="http://www.gracepointcoppell.org/');
-	html = html.replace(/src=\"\//ig, 'src="http://www.gracepointcoppell.org/');
+	html = html.replace(/href=\"\//ig, 'href="http://www.firstamarillo.org/');
+	html = html.replace(/src=\"\//ig, 'src="http://www.firstamarillo.org/');
 	return html.replace(/href=\"(.+?)\"/gi, 'onclick="window.open(\'$1\',\'_system\',\'location=yes\');"');
 }
 
