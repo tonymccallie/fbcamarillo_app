@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<widget id="net.greyback.fbcamarillo" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-	<name>FBC Amarillo</name>
-	<description>First Baptist Church of Amarillo, TX</description>
-	<author email="info@greyback.net" href="http://greyback.net/">Greyback Labs, LLP</author>
+<widget id="net.greyback.fbcamarillo" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+	<name>First Baptist Amarillo</name>
+	<description>GracePoint App</description>
+	<author email="info@greyback.net" href="http://greyback.net/">GreyBack Labs, LLP</author>
 	<content src="index.html" />
 	<access origin="*" />
 	<preference name="permissions" value="none" />
