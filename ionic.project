@@ -1,6 +1,6 @@
 {
-  "name": "GracePoint Church",
-  "app_id": "3de33e4f",
+  "name": "FBC Amarillo",
+  "app_id": "ebce0aa4",
   "gulpStartupTasks": [
     "sass",
     "watch"

@@ -16,7 +16,8 @@ $dark:                            #444 !default;
 */
 
 
-$positive:                        #CE4A3B !default;
+$positive:                        #b02b1a !default;
+$light:							  #faf1d5 !default;
 $accentGrey:					  #e6e6e6;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
@@ -26,6 +27,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 @import "scss/fonts.scss";
+
+.pane, .view {
+	background-image: url(../img/background-01.png);
+	background-size: cover;
+}
 
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: "LatoLight";
@@ -125,6 +131,7 @@ div.slider-pager {
 
 .bar-positive .button.button-clear {
 	font-size: 30px;
+	color: $light;
 }
 
 .tabs {
@@ -145,6 +152,10 @@ div.slider-pager {
 .threeleaf-groups:before {content: "oC";}
 .threeleaf-events:before {content: "oe";}
 .threeleaf-live:before {content: "oz";}
+
+.item-complex .item-content, .item-radio .item-content {
+	background: $light;
+}
 
 .series_listing {
 	//padding-top: 5px;

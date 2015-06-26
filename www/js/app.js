@@ -39,9 +39,9 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	// Identify app
 	$ionicAppProvider.identify({
 		// The App ID (from apps.ionic.io) for the server
-		app_id: '3de33e4f',
+		app_id: 'ebce0aa4',
 		// The public API key all services will use for this app
-		api_key: 'dd2a68c9eb3d8cbe5b385aa55d40253fc6a9aa10e622e35a',
+		api_key: '2223c370a0970d9ce05985bde30b20595983a768fea620bb',
 		// Set the app to use development pushes
 		dev_push: true
 	});
