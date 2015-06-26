@@ -1,0 +1,65 @@
+<ion-side-menus enable-menu-with-back-views="false">
+	<ion-side-menu-content>
+		<ion-nav-bar class="bar-stable bar-positive nav-title-slide-ios7">
+			<ion-nav-back-button class="button-clear"></ion-nav-back-button>
+			<ion-nav-buttons side="right">
+				<button class="button button-icon button-clear ion-navicon" menu-toggle="right"></button>
+			</ion-nav-buttons>
+		</ion-nav-bar>
+		<ion-nav-view name="menuContent"></ion-nav-view>
+	</ion-side-menu-content>
+	<ion-side-menu side="right">
+		<ion-header-bar class="bar-stable bar-positive">
+			<h1 class="title">Menu</h1>
+		</ion-header-bar>
+		<ion-content>
+			<ion-list>
+				<div ng-if="audio.MessageMessage.filename !== null">
+					<ion-item class="item-divider bar bar-positive">
+						<span class="threeleaf">l</span>Now Playing</ion-item>
+					<ion-item>
+						<img ng-src="{{imageDir+audio.MessageSeries.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;">
+					</ion-item>
+					<ion-item class="row player_controls">
+						<div class="col">
+							<span ng-click="pauseAudio()" class="threeleaf">p</span>
+						</div>
+						<div class="col">
+							<span ng-click="playAudio()" class="threeleaf">P</span>
+						</div>
+						<div class="col">
+							<span ng-click="rwdAudio()" class="threeleaf">7</span>
+						</div>
+						<div class="col">
+							<span ng-click="fwdAudio()" class="threeleaf">8</span>
+						</div>
+					</ion-item>
+					<ion-item>
+						<h3>{{audio.MessageMessage.title}}</h3>
+						<h4>{{audio.MessageAuthor.name}}</h4>
+					</ion-item>
+					<ion-item>
+						<div id="player_progress" ng-click="scrubAudio($event)">
+							<div id="player_progress_indicator" style="width:{{audioStats.percentage}}%;">&#xA0;</div>
+						</div>
+						<div class="player_progress_timers">
+							<div class="player_progress_current">{{audioStats.current}}</div>
+							<div class="player_progress_duration">{{audioStats.duration}}</div>
+						</div>
+					</ion-item>
+				</div>
+				<ion-item class="item-divider bar bar-positive">
+					<span class="threeleaf">b</span>Menu</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/about">About</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/new">New to GracePoint</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/giving">Giving</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/contact">Contact</ion-item>
+				<ion-item class="item-divider bar bar-positive">
+					<span class="threeleaf">g</span>App Info</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/developer">Developer</ion-item>
+				<ion-item nav-clear="" menu-close="" href="#/tab/jesus">About Jesus</ion-item>
+				<ion-item nav-clear="" menu-close="" ui-sref="menu.tabs.settings">Settings</ion-item>
+			</ion-list>
+		</ion-content>
+	</ion-side-menu>
+</ion-side-menus>

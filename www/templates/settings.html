@@ -1,0 +1,15 @@
+<ion-view title="Settings">
+	<ion-content class="has-header">
+		<div class="padding">
+			<button class="button button-primary button-block" ng-click="checkForUpdates()">Check for updates</button>
+			<div ng-if="hasUpdate">
+				<button class="button button-stable button-block button-pulse button-positive" ng-click="doUpdate()">Download Update</button>
+				<div id="player_progress">
+					<div id="player_progress_indicator" style="width:{{progress}}%;">&#xA0;</div>
+				</div>
+			</div>
+			<h4>Logs:</h4>
+			<div ng-repeat="log in logs">{{log}}</div>
+		</div>
+	</ion-content>
+</ion-view>

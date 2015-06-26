@@ -1,0 +1,285 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+
+$positive:                        #CE4A3B !default;
+$accentGrey:					  #e6e6e6;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+@import "scss/fonts.scss";
+
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "LatoLight";
+}
+
+.padding {
+	padding: 15px;
+	a {
+		color: $positive;
+		text-decoration: none;
+		font-family: "LatoBold";
+	}
+	a.button {
+		font-family: "LatoLight";
+	}
+}
+
+.scaleVid {
+	position:relative;
+	height:0;
+}
+
+.ratio16x9 {
+	padding-bottom:56.25%;
+}
+
+.ratio4x3 {
+	padding-bottom:75%;
+}
+
+.audioPlayerRatio {
+	padding-bottom:15%;
+}
+
+.scaleVid {
+	background: url(../img/loading.gif) center center no-repeat #9d9d9d;
+	background-size: 20%;
+}
+
+.scaleVid div,
+.scaleVid object,
+.scaleVid embed,
+.scaleVid iframe,
+.scaleVid video {
+	position:absolute !important;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+
+div.slider-pager {
+	position: absolute;
+	bottom: 20px;
+	z-index: 1;
+	width: 100%;
+	height: 15px;
+	top: auto;
+	text-align: center;
+}
+
+.platform-ios {
+	.menu-right ion-item:first-child {
+		padding-top: 30px;
+		height: 74px;
+	}
+}
+
+.has-tabs, .bar-footer.has-tabs {
+	bottom: 59px;
+}
+
+.title-image {
+	margin-top: 7px;
+	height: 30px;
+}
+
+.threeleaf {
+	font-family: 'Threeleaf';
+	font-size: 1.5em;
+	vertical-align: -.15em;
+	font-weight: normal;
+}
+
+.threeleaf-separator {
+	color: $light;
+	font-size: 18px;
+	text-align: center;
+	.threeleaf {
+		vertical-align: -.13em;
+	}
+	background: $positive;
+	line-height: 30px;
+	padding: 10px;
+	margin-top: -5px;
+}
+
+.bar-positive .button.button-clear {
+	font-size: 30px;
+}
+
+.tabs {
+	height: 60px;
+}
+
+.tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
+	line-height: 32px;
+}
+
+.tab-item .threeleaf {
+	font-size: 40px;
+	line-height: 38px;
+}
+
+.threeleaf-home:before {content: "oh";}
+.threeleaf-sermons:before {content: "oZ";}
+.threeleaf-groups:before {content: "oC";}
+.threeleaf-events:before {content: "oe";}
+.threeleaf-live:before {content: "oz";}
+
+.series_listing {
+	//padding-top: 5px;
+	padding: 5px;
+	width: 100%;
+	float: left;
+	.padding {
+		padding: 5px;
+	}
+}
+
+.latest_title {
+	width: 100%;
+	padding: 2%;
+	margin: 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: rgba(255,255,255,.5);
+}
+
+.series_list {
+	width: 50%;
+	float: left;
+}
+
+.community_post {
+	display: block;
+	margin-bottom: 15px;
+	position: relative;
+	.scaleVid {
+		//background: @imageBG;
+	}
+	h4 {
+		position: absolute;
+		bottom: -1px;
+		left: 0;
+		margin: 0;
+		padding: 5px 2%;
+		width: 100%;
+		background: $positive;
+		color: $light;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.player_controls {
+	span {
+		font-size: 3em;
+		color: #999;
+	}
+}
+
+#player_progress {
+	border: solid 1px $positive;
+	#player_progress_indicator {
+		background: #ccc;
+		border-right: solid 4px $positive;
+	}
+}
+
+.player_progress_timers {
+	width: 100%;
+	float: left;
+	div {
+		width: 50%;
+		float: left;
+	}
+	.player_progress_duration {
+		text-align: right;
+	}
+}
+
+.scaleVid {
+	position:relative;
+	height:0;
+}
+
+.ratio16x9 {
+	padding-bottom:56.25%;
+}
+
+.ratio4x3 {
+	padding-bottom:75%;
+}
+
+.audioPlayerRatio {
+	padding-bottom:35px;
+}
+
+.scaleVid > div,
+.scaleVid > object,
+.scaleVid > embed,
+.scaleVid > iframe,
+.scaleVid > img,
+.scaleVid > video {
+	position:absolute !important;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index: 100;
+}
+
+.event_list {
+	.item {
+		padding-left: 76px;
+		position: relative;
+		.accentCol {
+			background: $accentGrey;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 60px;
+			height: 100%;
+			span {
+				display: block;
+				padding: 16px;
+				text-align: center;
+			}
+		}
+	}
+}
+
+//.fade-box {
+//	position: fixed;
+//	top: 0;
+//	left: 0;
+//}
+//
+//.scroll {
+//	position: relative;
+//	margin-top: 100px;
+//	background: $light;
+//}
+	

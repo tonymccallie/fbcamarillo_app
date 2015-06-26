@@ -1,0 +1,19 @@
+<div>
+	<ion-view title="POST">
+		<ion-content class="">
+			<div class="scaleVid ratio16x9">
+				<img ng-if="post.MediaImage.filename.length > 0" img-cache ic-src="{{imageDir+post.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;" />
+				<div ng-if="post.MediaVideo.preview.length > 0" class="scaleVid ratio16x9">
+					<video id="post_video_player" controls="controls" poster="{{imageDir+post.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto">
+						<source ng-src="{{DOMAIN+'/play/vid/'+post.MediaVideo.id+'/play.mp4' | trusted}}">
+					</video>
+				</div>
+			</div>
+			<div class="threeleaf-separator">{{post.CommunityPost.title}}</div>
+			<div class="padding">
+				<a ng-if="post.MediaVideo.filename" class="button button-block button-positive" ng-click="playVideo()"><span class="threeleaf">V</span>WATCH</a>
+				<div ng-bind-html="trust(post.CommunityPost.body)" class="padding"></div>
+			</div>
+		</ion-content>
+	</ion-view>
+</div>

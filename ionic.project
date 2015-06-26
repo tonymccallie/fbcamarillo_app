@@ -1,0 +1,12 @@
+{
+  "name": "GracePoint Church",
+  "app_id": "3de33e4f",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

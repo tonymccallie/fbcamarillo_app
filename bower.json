@@ -1,0 +1,16 @@
+{
+  "name": "FBCAmarillo",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0",
+    "ngCordova": "~0.1.17-alpha",
+    "ionic-service-core": "~0.1.7",
+    "ionic-service-push": "~0.1.7",
+    "ionic-service-deploy": "~0.0.6",
+    "localforage": "~1.2.3",
+    "ionic-service-analytics": "~1.0.0"
+  },
+  "dependencies": {
+    "angular-imgcache.js": "~0.1.0"
+  }
+}

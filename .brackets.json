@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/tonymccallie/Sites/gracepoint_app/www/lib/localforage/src/drivers/websql.js",
+        "/Users/tonymccallie/Sites/gracepoint_app/www/js/controllers.js",
+        "/Users/tonymccallie/Sites/gracepoint_app/www/lib/localforage/src/drivers/indexeddb.js",
+        "/Users/tonymccallie/Sites/gracepoint_app/www/lib/ionic-service-deploy/ionic-deploy.js"
+    ]
+}
