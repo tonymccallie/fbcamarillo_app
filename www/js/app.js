@@ -86,7 +86,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 				return NewsService.latest();
 			},
 			posts: function(CommunityService) {
-				return CommunityService.latest();
+				//return CommunityService.latest();
 			}
 		}
 	})

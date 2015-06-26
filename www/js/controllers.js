@@ -123,6 +123,7 @@ angular.module('greyback.controllers', [])
 			$scope.hasUpdate = hasUpdate;
 		}, function (err) {
 			$scope.log('Ionic Deploy: Unable to check for updates', err);
+			console.log(err);
 		});
 	}
 });
