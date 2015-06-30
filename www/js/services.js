@@ -2,35 +2,52 @@ angular.module('greyback.services', [])
 
 .service('NewsService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
 	console.log('NewsService');
+	
+	// 3 headers
+	// 1 general
 	var self = this;
-	var articles = [];
+	var articles = {
+		headers: [],
+		articles: []
+	};
 
-	self.local = function () {
-		console.log('NewsService.local');
+	self.local = function ($category) {
+		console.log('NewsService.local '+$category);
 		var deferred = $q.defer();
-		var localArticles = $localStorage.getArray('NewsLatest');
+		var localArticles = $localStorage.getArray('NewsLatest.'+$category);
 		deferred.resolve(localArticles);
 		return deferred.promise;
 	}
 
-	self.remote = function () {
-		console.log('NewsService.remote');
-		var promise = $http.get(DOMAIN + '/ajax/plugin/news/news_articles/json/limit:4/category:3')
+	self.remote = function ($category) {
+		console.log('NewsService.remote '+$category);
+		switch($category) {
+			case 'headers':
+				//category_id 3 = headers
+				var news_url = '/ajax/plugin/news/news_articles/json/limit:4/category:3';
+				break;
+			default:
+				//category_id 1 = general
+				var news_url = '/ajax/plugin/news/news_articles/json/limit:10/category:1';
+				break;
+		}
+		console.log(news_url);
+		var promise = $http.get(DOMAIN + news_url)
 			.success(function (response, status, headers, config) {
 
 			if (response.status === 'SUCCESS') {
 				//empty articles
-				articles = [];
+				articles[$category] = [];
 				//populate
 				var temp = {};
 				angular.forEach(response.data, function (item) {
 					item.NewsArticle.body = onclickFix(item.NewsArticle.body);
-					articles.push(item);
+					articles[$category].push(item);
 					temp = item;
 				});
 
 				//save to cache
-				$localStorage.setArray('NewsLatest', articles);
+				$localStorage.setArray('NewsLatest.'+$category, articles[$category]);
 				$ionicSlideBoxDelegate.update();
 
 			} else {
@@ -44,161 +61,61 @@ angular.module('greyback.services', [])
 		return promise;
 	}
 
-	self.update = function () {
-		console.log('NewsService.update');
+	self.update = function ($category) {
+		console.log('NewsService.update '+$category);
 		var deferred = $q.defer();
-		self.remote().then(function (remoteArticles) {
-			deferred.resolve(articles);
+		self.remote($category).then(function (remoteArticles) {
+			deferred.resolve(articles[$category]);
 		});
 		return deferred.promise;
 	}
 
-	self.init = function () {
+	self.init = function ($category) {
 		console.log('NewsService.init');
 		var deferred = $q.defer();
-		self.local().then(function (storedArticles) {
+		self.local($category).then(function (storedArticles) {
 			if (storedArticles.length > 0) {
-				console.log('NewsService: use local');
-				articles = storedArticles;
-				deferred.resolve(articles);
+				console.log('NewsService: use local '+$category);
+				articles[$category] = storedArticles;
+				deferred.resolve(articles[$category]);
 			} else {
-				console.log('NewsService: use remote');
-				self.remote().then(function (remoteArticles) {
-					deferred.resolve(articles);
+				console.log('NewsService: use remote '+$category);
+				self.remote($category).then(function (remoteArticles) {
+					deferred.resolve(articles[$category]);
 				});
 			}
 		});
 		return deferred.promise;
 	}
-
-	self.latest = function () {
-		console.log('NewsService.latest');
+	
+	self.latest = function ($category) {
+		console.log('NewsService.latestHeaders '+$category);
 		var deferred = $q.defer();
-		if (articles.length === 0) {
-			console.log('NewsService: no articles');
-			self.init().then(function (initArticles) {
-				articles = initArticles;
+		if (articles[$category].length === 0) {
+			console.log('NewsService: no articles '+$category);
+			self.init($category).then(function (initArticles) {
+				articles[$category] = initArticles;
 				deferred.resolve(initArticles);
 			});
 		} else {
-			console.log('NewsService: had articles');
-			deferred.resolve(articles);
+			console.log('NewsService: had articles '+$category);
+			deferred.resolve(articles[$category]);
 		}
 		$ionicSlideBoxDelegate.update();
 		return deferred.promise;
 	}
 
-	self.article = function ($articleIndex) {
-		console.log('NewsService.article');
+
+	self.article = function ($articleIndex, $category) {
+		console.log('NewsService.article '+$category);
 		var deferred = $q.defer();
-		if (articles.length === 0) {
+		if (articles[$category].length === 0) {
 			console.log('empty');
 			$location.path('/tab/home');
 			$location.replace();
 			return null;
 		} else {
-			deferred.resolve(articles[$articleIndex]);
-		}
-		return deferred.promise;
-	}
-})
-
-.service('CommunityService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
-	console.log('CommunityService');
-	var self = this;
-	var posts = [];
-
-	self.local = function () {
-		console.log('CommunityService.local');
-		var deferred = $q.defer();
-		var localPosts = $localStorage.getArray('CommunityLatest');
-		deferred.resolve(localPosts);
-		return deferred.promise;
-	}
-
-	self.remote = function () {
-		console.log('CommunityService.remote');
-		var promise = $http.get(DOMAIN + '/ajax/plugin/community/community_posts/json')
-			.success(function (response, status, headers, config) {
-
-			if (response.status === 'SUCCESS') {
-				//empty articles
-				posts = [];
-				//populate
-				var temp = {};
-				angular.forEach(response.data, function (item) {
-					item.CommunityPost.body = onclickFix(item.CommunityPost.body);
-					posts.push(item);
-					temp = item;
-				});
-
-				//save to cache
-				$localStorage.setArray('CommunityLatest', posts);
-
-			} else {
-				alert('there was a server error for COMMUNITY');
-				console.log(response);
-			}
-		})
-			.error(function (response, status, headers, config) {
-			console.log(['error', data, status, headers, config]);
-		});
-		return promise;
-	}
-
-	self.update = function () {
-		console.log('CommunityService.update');
-		var deferred = $q.defer();
-		self.remote().then(function (remotePosts) {
-			deferred.resolve(posts);
-		});
-		return deferred.promise;
-	}
-
-	self.init = function () {
-		console.log('CommunityService.init');
-		var deferred = $q.defer();
-		self.local().then(function (storedPosts) {
-			if (storedPosts.length > 0) {
-				console.log('CommunityService: use local');
-				posts = storedPosts;
-				deferred.resolve(posts);
-			} else {
-				console.log('CommunityService: use remote');
-				self.remote().then(function (remotePosts) {
-					deferred.resolve(posts);
-				});
-			}
-		});
-		return deferred.promise;
-	}
-
-	self.latest = function () {
-		console.log('CommunityService.latest');
-		var deferred = $q.defer();
-		if (posts.length === 0) {
-			console.log('CommunityService: no posts');
-			self.init().then(function (initPosts) {
-				posts = initPosts;
-				deferred.resolve(initPosts);
-			});
-		} else {
-			console.log('CommunityService: had posts');
-			deferred.resolve(posts);
-		}
-		return deferred.promise;
-	}
-
-	self.post = function ($postIndex) {
-		console.log('CommunityService.post');
-		var deferred = $q.defer();
-		if (posts.length === 0) {
-			console.log('empty');
-			$location.path('/tab/home');
-			$location.replace();
-			return null;
-		} else {
-			deferred.resolve(posts[$postIndex]);
+			deferred.resolve(articles[$category][$articleIndex]);
 		}
 		return deferred.promise;
 	}

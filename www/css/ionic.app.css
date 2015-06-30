@@ -7775,6 +7775,22 @@ div.slider-pager {
 .has-tabs, .bar-footer.has-tabs {
   bottom: 59px; }
 
+.xtab-item .icon {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  height: 100%;
+  background-size: contain; }
+  .xtab-item .icon.icon_home {
+    background-image: url('../img/fbc_app_icon_home.png'); }
+  .xtab-item .icon.icon_sermons {
+    background-image: url('../img/fbc_app_icon_sermons.png'); }
+  .xtab-item .icon.icon_news {
+    background-image: url('../img/fbc_app_icon_news.png'); }
+  .xtab-item .icon.icon_events {
+    background-image: url('../img/fbc_app_icon_events.png'); }
+  .xtab-item .icon.icon_giving {
+    background-image: url('../img/fbc_app_icon_giving.png'); }
+
 .title-image {
   margin-top: 7px;
   height: 30px; }
@@ -7801,29 +7817,30 @@ div.slider-pager {
   color: #faf1d5; }
 
 .tabs {
-  height: 60px; }
+  height: 58px;
+  padding-top: 5px; }
 
 .tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
-  line-height: 32px; }
+  line-height: 16px; }
 
 .tab-item .threeleaf {
   font-size: 40px;
   line-height: 38px; }
 
-.threeleaf-home:before {
-  content: "oh"; }
+.threeleaf-home {
+  content: url(../img/fbc_app_icon_home.png); }
 
-.threeleaf-sermons:before {
-  content: "oZ"; }
+.threeleaf-sermons {
+  content: url(../img/fbc_app_icon_sermons.png); }
 
-.threeleaf-groups:before {
-  content: "oC"; }
+.threeleaf-news {
+  content: url(../img/fbc_app_icon_news.png); }
 
-.threeleaf-events:before {
-  content: "oe"; }
+.threeleaf-events {
+  content: url(../img/fbc_app_icon_events.png); }
 
-.threeleaf-live:before {
-  content: "oz"; }
+.threeleaf-giving {
+  content: url(../img/fbc_app_icon_giving.png); }
 
 .item-complex .item-content, .item-radio .item-content {
   background: #faf1d5; }

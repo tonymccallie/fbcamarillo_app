@@ -82,17 +82,17 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		},
 		resolve: {
-			articles: function(NewsService) {
-				return NewsService.latest();
+			headers: function(NewsService) {
+				return NewsService.latest('headers');
 			},
-			posts: function(CommunityService) {
-				//return CommunityService.latest();
+			articles: function(NewsService) {
+				return NewsService.latest('articles');
 			}
 		}
 	})
 	
 	.state('menu.tabs.article',{
-		url: '/article/:articleIndex',
+		url: '/article/:articleIndex/:category',
 		views: {
 			'tab-home': {
 				templateUrl: 'templates/article.html',
@@ -101,7 +101,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			article: function(NewsService, $stateParams) {
-				return NewsService.article($stateParams.articleIndex)
+				return NewsService.article($stateParams.articleIndex, $stateParams.category)
 			}
 		}
 	})

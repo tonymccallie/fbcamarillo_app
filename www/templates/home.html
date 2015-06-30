@@ -6,10 +6,10 @@
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="update()"></ion-refresher>
 		<div class="scaleVid ratio16x9">
 			<ion-slide-box does-continue="true" auto-play="true">
-				<ion-slide ng-repeat="article in articles">
+				<ion-slide ng-repeat="header in headers">
 					<div>
-						<a ui-sref="menu.tabs.article({articleIndex: $index})">
-							<img ng-if="article.MediaImage.filename.length > 0" img-cache ic-src="{{imageDir+article.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}" style="width: 100%;" />
+						<a ui-sref="menu.tabs.article({articleIndex: $index, category: 'headers'})">
+							<img ng-if="header.MediaImage.filename.length > 0" img-cache ic-src="{{imageDir+header.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{header.MediaImage.filename}}" style="width: 100%;" />
 						</a>
 					</div>
 				</ion-slide>
@@ -18,19 +18,18 @@
 		<div class="threeleaf-separator">
 			<span class="threeleaf">oy</span>NEWS & EVENTS</div>
 		<div class="padding">
-			{{imageDir}}
-			<div class="community_post" ng-repeat="post in posts">
+			<div class="community_post" ng-repeat="article in articles">
 				<div class="scaleVid ratio16x9">
-					<a ui-sref="menu.tabs.post({postIndex: $index})">
-						<div ng-switch on="post.CommunityPost.type">
+					<a ui-sref="menu.tabs.article({articleIndex: $index, category: 'articles'})">
+						<div ng-switch on="article.NewsArticle.media_video_id">
 							<div ng-switch-when="video">
-								<img ng-if="post.MediaVideo.preview !== null" img-cache ic-src="{{imageDir+post.MediaVideo.preview }}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;" />
+								<img ng-if="article.MediaVideo.preview !== null" img-cache ic-src="{{imageDir+article.MediaVideo.preview }}/width:800/height:450/crop:true/zoom:auto/{{article.MediaVideo.preview}}" style="width: 100%;" />
 							</div>
 							<div ng-switch-default>
-								<img ng-if="post.MediaImage.filename !== null" img-cache ic-src="{{imageDir+post.MediaImage.filename }}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;" />
+								<img ng-if="article.MediaImage.filename !== null" img-cache ic-src="{{imageDir+article.MediaImage.filename }}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}" style="width: 100%;" />
 							</div>
 						</div>
-						<h4 class="redbg">{{post.CommunityPost.title}}</h4>
+						<h4 class="redbg">{{article.NewsArticle.title}}</h4>
 					</a>
 				</div>
 			</div>

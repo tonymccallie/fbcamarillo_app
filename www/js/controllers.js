@@ -35,7 +35,7 @@ angular.module('greyback.controllers', [])
 	});
 })
 
-.controller('HomeController', function ($scope, $q, $ionicModal, $timeout, $ionicSlideBoxDelegate, articles, posts, ImgCache, NewsService, CommunityService) {
+.controller('HomeController', function ($scope, $q, $ionicModal, $timeout, $ionicSlideBoxDelegate, articles, headers, ImgCache, NewsService) {
 	console.log('HomeController');
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
@@ -48,7 +48,7 @@ angular.module('greyback.controllers', [])
 	$scope.loginData = {};
 
 	$scope.articles = articles;
-	$scope.posts = posts;
+	$scope.headers = headers;
 
 	// Create the login modal that we will use later
 	$ionicModal.fromTemplateUrl('templates/login.html', {
@@ -80,14 +80,14 @@ angular.module('greyback.controllers', [])
 
 	$scope.update = function () {
 		console.log('HomeController.update');
-		var newsPromise = NewsService.update();
-		var communityPromise = CommunityService.update();
+		var headersPromise = NewsService.update('headers');
+		var newsPromise = NewsService.update('articles');
 
-		$q.all([newsPromise, communityPromise]).then(function (data) {
+		$q.all([headersPromise, newsPromise]).then(function (data) {
 			console.log(data);
-			$scope.articles = data[0];
+			$scope.headers = data[0];
 			$ionicSlideBoxDelegate.update();
-			$scope.posts = data[1];
+			$scope.articles = data[1];
 			$scope.$broadcast('scroll.refreshComplete');
 		});
 	}

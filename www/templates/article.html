@@ -2,7 +2,7 @@
 	<ion-view title="NEWS">
 		<ion-content class="">
 			<div class="scaleVid ratio16x9">
-				<img img-cache ic-src="{{imageDir+article.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto"/>
+				<img img-cache ic-src="{{imageDir+article.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}"/>
 			</div>
 			<div class="threeleaf-separator">{{article.NewsArticle.title}}</div>
 			<div ng-bind-html="trust(article.NewsArticle.body)" class="padding"></div>
