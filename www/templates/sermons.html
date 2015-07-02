@@ -1,0 +1,16 @@
+<ion-view title="SERIES">
+	<ion-content>
+		<div class="scaleVid ratio16x9">
+			<img ng-if="selectedSeries.MediaImage.filename.length > 0" img-cache ic-src="{{imageDir+selectedSeries.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{selectedSeries.MediaImage.filename}}" style="width: 100%;" />
+		</div>
+		<div class="threeleaf-separator">{{selectedSeries.title}}</div>
+		<div class="list event_list">
+			<a class="item" ui-sref="menu.tabs.sermon({sermonIndex: $index})" ng-repeat="sermon in sermons">
+				<div class="accentCol"><span>{{sermon.displayDate}}</span></div>
+				<h2>{{sermon.MessageMessage.title}}</h2>
+				<p>{{sermon.MessageAuthor.name}}</p>
+			</a>
+			<div class="item" ng-if="sermons.length == 0">LOADING..</div>
+		</div>
+	</ion-content>
+</ion-view>

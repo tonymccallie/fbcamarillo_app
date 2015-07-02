@@ -1,0 +1,15 @@
+<ion-view title="Events">
+	<ion-content class="">
+		<div class="scaleVid ratio16x9">
+			<img src="img/temp.png"/>
+		</div>
+		<div class="threeleaf-separator">EVENTS</div>
+		<div class="list event_list">
+			<a class="item" ng-repeat="event in events">
+				<div class="accentCol"><span>{{event.displayDate}}</span></div>
+				<h2>{{event.BridgeCcbEvent.name}}</h2>
+			</a>
+			<div class="item" ng-if="events.length == 0">LOADING..</div>
+		</div>
+	</ion-content>
+</ion-view>

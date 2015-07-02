@@ -1,0 +1,15 @@
+<ion-view title="{{sermon.MessageMessage.title}}">
+	<ion-content has-header="true">
+		<div class="scaleVid ratio16x9">
+			<video id="sermon_video_player" controls="controls" poster="{{imageDir+sermon.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto" webkit-playsinline>
+				<source ng-src="{{DOMAIN+'/play/vid/'+sermon.MediaVideo.id+'/play.mp4' | trusted}}" type="video/mp4" />
+			</video>
+		</div>
+		<div class="threeleaf-separator"><span class="threeleaf">oZ</span> SERMON SERIES</div>
+		<div class="padding">
+			<a ng-if="sermon.MediaAudio.filename" class="button button-block button-positive" ng-click="setAudio(sermon)"><span class="threeleaf">L</span>LISTEN</a>
+			<a ng-if="sermon.MediaVideo.filename" class="button button-block button-positive" ng-click="playVideo()"><span class="threeleaf">V</span>WATCH</a>
+			{{sermon.MessageMessage.descr}}
+		</div>
+	</ion-content>
+</ion-view>

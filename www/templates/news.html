@@ -1,0 +1,23 @@
+<ion-view view-title="News">
+	<ion-content>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="update()"></ion-refresher>
+		<div class="padding">
+			<div class="community_post" ng-repeat="article in articles">
+				<div class="scaleVid ratio16x9">
+					<a ui-sref="menu.tabs.article_details({articleIndex: $index, category: 'articles'})">
+						<div ng-switch on="article.NewsArticle.media_video_id">
+							<div ng-switch-when="video">
+								<img ng-if="article.MediaVideo.preview !== null" img-cache ic-src="{{imageDir+article.MediaVideo.preview }}/width:800/height:450/crop:true/zoom:auto/{{article.MediaVideo.preview}}" style="width: 100%;" />
+							</div>
+							<div ng-switch-default>
+								<img ng-if="article.MediaImage.filename !== null" img-cache ic-src="{{imageDir+article.MediaImage.filename }}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}" style="width: 100%;" />
+							</div>
+						</div>
+						<h4 class="redbg">{{article.NewsArticle.title}}</h4>
+					</a>
+				</div>
+			</div>
+			<div ng-if="posts.length == 0">LOADING..</div>
+		</div>
+	</ion-content>
+</ion-view>

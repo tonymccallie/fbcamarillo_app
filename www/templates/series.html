@@ -1,10 +1,10 @@
 <ion-view title="Series">
 	<ion-content class="has-header">
-		<ion-refresher pulling-text="Pull to refresh..." on-refresh="doSeriesRefresh()"></ion-refresher>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="update()"></ion-refresher>
 		<div class="scaleVid ratio16x9">
-			<a ng-if="latestMessage.message.MessageSeries.MediaImage.filename.length > 0" href="#/tab/sermon/{{latestMessage.message.MessageMessage.id}}">
-				<img ng-src="{{imageDir+latestMessage.message.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;" />
-				<h4 class="latest_title">{{latestMessage.message.MessageMessage.title}}</h4>
+			<a ng-if="latestMessage.MessageSeries.MediaImage.filename.length > 0" ui-sref="menu.tabs.sermon({messageId: latestMessage.MessageMessage.id})">
+				<img img-cache ic-src="{{imageDir+latestMessage.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto/{{latestMessage.MediaVideo.preview}}" style="width: 100%;" />
+				<h4 class="latest_title">{{latestMessage.MessageMessage.title}}</h4>
 			</a>
 		</div>
 		<div class="threeleaf-separator"><span class="threeleaf">oZ</span> SERMON SERIES</div>
@@ -12,8 +12,8 @@
 			<div class="series_list" ng-repeat="item in series">
 				<div class="padding">
 					<div class="scaleVid ratio16x9 ">
-						<a ui-sref="tab.sermons({ seriesId:$index })" >
-							<img ng-src="{{imageDir+item.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto" style="width: 100%;" />
+						<a ui-sref="menu.tabs.sermons({ seriesIndex:$index })" >
+							<img img-cache ic-src="{{imageDir+item.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{item.MediaImage.filename}}" style="width: 100%;" />
 						</a>
 					</div>
 				</div>

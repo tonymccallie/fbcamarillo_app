@@ -31,9 +31,16 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			// org.apache.cordova.statusbar required
 			$cordovaStatusBar.style(2);
 		}
+
 		ImgCache.$init();
 	});
 })
+
+.filter('trusted', ['$sce', function ($sce) {
+		return function (url) {
+			return $sce.trustAsResourceUrl(url);
+		};
+	}])
 
 .config(function ($ionicAppProvider, ImgCacheProvider, $stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 	// Identify app
@@ -50,7 +57,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 
 	$ionicConfigProvider.backButton.previousTitleText(false).text('<i class="threeleaf">5</i>').icon('');
 	$ionicConfigProvider.tabs.position('bottom');
-	
+
 	$stateProvider
 
 	.state('menu', {
@@ -59,7 +66,15 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		templateUrl: "templates/menu.html",
 		controller: 'AppController',
 		resolve: {
-			articles: function () {}
+			headers: function (NewsService) {
+				return NewsService.latest('headers');
+			},
+			articles: function (NewsService) {
+				return NewsService.latest('articles');
+			},
+			series: function (MessagesService) {
+				return MessagesService.latest();
+			}
 		}
 	})
 
@@ -82,16 +97,16 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		},
 		resolve: {
-			headers: function(NewsService) {
+			headers: function (NewsService) {
 				return NewsService.latest('headers');
 			},
-			articles: function(NewsService) {
+			articles: function (NewsService) {
 				return NewsService.latest('articles');
 			}
 		}
 	})
-	
-	.state('menu.tabs.article',{
+
+	.state('menu.tabs.article', {
 		url: '/article/:articleIndex/:category',
 		views: {
 			'tab-home': {
@@ -100,13 +115,13 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		},
 		resolve: {
-			article: function(NewsService, $stateParams) {
+			article: function (NewsService, $stateParams) {
 				return NewsService.article($stateParams.articleIndex, $stateParams.category)
 			}
 		}
 	})
-	
-	.state('menu.tabs.post',{
+
+	.state('menu.tabs.post', {
 		url: '/post/:postIndex',
 		views: {
 			'tab-home': {
@@ -115,27 +130,138 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		},
 		resolve: {
-			post: function(CommunityService, $stateParams) {
+			post: function (CommunityService, $stateParams) {
 				return CommunityService.post($stateParams.postIndex)
 			}
 		}
 	})
-	
+
 	.state('menu.tabs.series', {
 		url: '/series',
 		views: {
 			'tab-series': {
 				templateUrl: 'templates/series.html',
-//				controller: 'SeriesCtrl'
+				controller: 'MessagesController'
 			}
 		},
 		resolve: {
-			series: function(MessagesService) {
-				return MessagesService.series();
+			series: function (MessagesService) {
+				return MessagesService.latest();
+			}
+		}
+	})
+
+	.state('menu.tabs.sermons', {
+		url: '/sermons/:seriesIndex',
+		views: {
+			'tab-series': {
+				templateUrl: 'templates/sermons.html',
+				controller: 'MessagesController'
+			}
+		}
+	})
+
+	.state('menu.tabs.sermon', {
+		url: '/sermon/:sermonIndex',
+		views: {
+			'tab-series': {
+				templateUrl: 'templates/sermon.html',
+				controller: 'MessageController'
+			}
+		},
+		resolve: {
+			sermon: function (MessagesService, $stateParams) {
+				return MessagesService.sermon($stateParams.sermonIndex);
+			}
+		}
+	})
+
+	.state('menu.tabs.news', {
+		url: "/news",
+		views: {
+			'tab-news': {
+				templateUrl: "templates/news.html",
+				controller: 'HomeController',
+			}
+		},
+		resolve: {
+			articles: function (NewsService) {
+				return NewsService.latest('articles');
+			}
+		}
+	})
+
+	.state('menu.tabs.article_details', {
+		url: '/article_details/:articleIndex/:category',
+		views: {
+			'tab-news': {
+				templateUrl: 'templates/article.html',
+				controller: 'NewsController'
+			}
+		},
+		resolve: {
+			article: function (NewsService, $stateParams) {
+				console.log($stateParams);
+				return NewsService.article($stateParams.articleIndex, $stateParams.category)
 			}
 		}
 	})
 	
+	.state('menu.tabs.events', {
+		url: '/events',
+		views: {
+			'tab-giving': {
+				templateUrl: 'templates/events.html'
+			}
+		}
+	})
+	
+	.state('menu.tabs.giving', {
+		url: '/giving',
+		views: {
+			'tab-giving': {
+				templateUrl: 'templates/giving.html'
+			}
+		}
+	})
+
+	.state('menu.tabs.about', {
+		url: '/about',
+		views: {
+			'tab-static': {
+				templateUrl: 'templates/about.html'
+			}
+		}
+	})
+
+	.state('menu.tabs.contact', {
+		url: '/contact',
+		views: {
+			'tab-static': {
+				templateUrl: 'templates/contact.html'
+			}
+		}
+	})
+
+	.state('menu.tabs.staff', {
+		url: '/settings',
+		views: {
+			'tab-static': {
+				templateUrl: 'templates/staff.html',
+				controller: 'StaffController'
+			}
+		}
+	})
+
+	.state('menu.tabs.developer', {
+		url: '/developer',
+		views: {
+			'tab-static': {
+				templateUrl: 'templates/developer.html'
+			}
+		}
+	})
+
 	.state('menu.tabs.settings', {
 		url: '/settings',
 		views: {

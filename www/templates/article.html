@@ -2,7 +2,12 @@
 	<ion-view title="NEWS">
 		<ion-content class="">
 			<div class="scaleVid ratio16x9">
-				<img img-cache ic-src="{{imageDir+article.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}"/>
+				<img ng-if="!article.MediaVideo.preview" img-cache ic-src="{{imageDir+article.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{article.MediaImage.filename}}"/>
+				<div ng-if="article.MediaVideo.preview.length > 0" class="scaleVid ratio16x9">
+					<video id="post_video_player" controls="controls" ng-attr-poster="{{imageDir+article.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto">
+						<source ng-src="{{DOMAIN+'/play/vid/'+article.MediaVideo.id+'/play.mp4' | trusted}}">
+					</video>
+				</div>
 			</div>
 			<div class="threeleaf-separator">{{article.NewsArticle.title}}</div>
 			<div ng-bind-html="trust(article.NewsArticle.body)" class="padding"></div>

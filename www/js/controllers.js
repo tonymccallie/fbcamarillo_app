@@ -84,21 +84,58 @@ angular.module('greyback.controllers', [])
 		var newsPromise = NewsService.update('articles');
 
 		$q.all([headersPromise, newsPromise]).then(function (data) {
-			console.log(data);
 			$scope.headers = data[0];
 			$ionicSlideBoxDelegate.update();
 			$scope.articles = data[1];
 			$scope.$broadcast('scroll.refreshComplete');
 		});
 	}
+	
+	$scope.update();
 })
 
-.controller('NewsController', function ($scope, article) {
+.controller('NewsController', function ($scope, $sce, article) {
 	$scope.article = article;
+	$scope.trust = function (snippet) {
+		return $sce.trustAsHtml(snippet);
+	};
 })
 
-.controller('CommunityController', function ($scope, post) {
-	$scope.post = post;
+.controller('MessagesController', function ($scope, $stateParams, $location, MessagesService, series) {
+	console.log('MessagesController');
+	$scope.series = series;
+	$scope.latestMessage = MessagesService.latestMessage();
+	
+	$scope.update = function () {
+		console.log('SeriesController.update');
+		var seriesPromise = MessagesService.update();
+
+		seriesPromise.then(function (data) {
+			$scope.latestMessage = MessagesService.latestMessage();
+			$scope.series = series;
+			$scope.$broadcast('scroll.refreshComplete');
+		});
+	}
+	
+	$scope.update();
+	
+	$scope.selectedSeries = null;
+	$scope.sermons = [];
+	if (typeof $stateParams.seriesIndex !== 'undefined') {
+		$scope.selectedSeries = $scope.series[$stateParams.seriesIndex];
+		MessagesService.getSeries($scope.selectedSeries.id).then(function(data) {
+			$scope.sermons = data;
+		});
+	}
+})
+
+.controller('MessageController', function ($scope, $stateParams, $location, MessagesService, sermon) {
+	console.log('MessageController');
+	$scope.sermon = sermon;
+})
+
+.controller('StaffController', function ($scope, $stateParams, $location) {
+	console.log('StaffController');
 })
 
 .controller('SettingsController', function ($scope, $ionicDeploy) {

@@ -7726,6 +7726,9 @@ a.button {
 body, h1, h2, h3, h4, h5, h6 {
   font-family: "LatoLight"; }
 
+body {
+  background: #b02b1a; }
+
 .padding {
   padding: 15px; }
   .padding a {

@@ -2,7 +2,7 @@ angular.module('greyback.services', [])
 
 .service('NewsService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
 	console.log('NewsService');
-	
+
 	// 3 headers
 	// 1 general
 	var self = this;
@@ -12,26 +12,26 @@ angular.module('greyback.services', [])
 	};
 
 	self.local = function ($category) {
-		console.log('NewsService.local '+$category);
+		console.log('NewsService.local ' + $category);
 		var deferred = $q.defer();
-		var localArticles = $localStorage.getArray('NewsLatest.'+$category);
+		var localArticles = $localStorage.getArray('NewsLatest.' + $category);
 		deferred.resolve(localArticles);
 		return deferred.promise;
 	}
 
 	self.remote = function ($category) {
-		console.log('NewsService.remote '+$category);
-		switch($category) {
-			case 'headers':
-				//category_id 3 = headers
-				var news_url = '/ajax/plugin/news/news_articles/json/limit:4/category:3';
-				break;
-			default:
-				//category_id 1 = general
-				var news_url = '/ajax/plugin/news/news_articles/json/limit:10/category:1';
-				break;
+		console.log('NewsService.remote ' + $category);
+		switch ($category) {
+		case 'headers':
+			//category_id 3 = headers
+			var news_url = '/ajax/plugin/news/news_articles/json/limit:4/category:3';
+			break;
+		default:
+			//category_id 1 = general
+			var news_url = '/ajax/plugin/news/news_articles/json/limit:10/category:1';
+			break;
 		}
-		console.log(news_url);
+		
 		var promise = $http.get(DOMAIN + news_url)
 			.success(function (response, status, headers, config) {
 
@@ -47,7 +47,7 @@ angular.module('greyback.services', [])
 				});
 
 				//save to cache
-				$localStorage.setArray('NewsLatest.'+$category, articles[$category]);
+				$localStorage.setArray('NewsLatest.' + $category, articles[$category]);
 				$ionicSlideBoxDelegate.update();
 
 			} else {
@@ -62,7 +62,7 @@ angular.module('greyback.services', [])
 	}
 
 	self.update = function ($category) {
-		console.log('NewsService.update '+$category);
+		console.log('NewsService.update ' + $category);
 		var deferred = $q.defer();
 		self.remote($category).then(function (remoteArticles) {
 			deferred.resolve(articles[$category]);
@@ -75,30 +75,34 @@ angular.module('greyback.services', [])
 		var deferred = $q.defer();
 		self.local($category).then(function (storedArticles) {
 			if (storedArticles.length > 0) {
-				console.log('NewsService: use local '+$category);
+				console.log('NewsService: use local ' + $category);
 				articles[$category] = storedArticles;
 				deferred.resolve(articles[$category]);
 			} else {
-				console.log('NewsService: use remote '+$category);
+				console.log('NewsService: use remote ' + $category);
 				self.remote($category).then(function (remoteArticles) {
 					deferred.resolve(articles[$category]);
 				});
 			}
 		});
+
+		$location.path('/tab/home');
+		$location.replace();
+
 		return deferred.promise;
 	}
-	
+
 	self.latest = function ($category) {
-		console.log('NewsService.latestHeaders '+$category);
+		console.log('NewsService.latestHeaders ' + $category);
 		var deferred = $q.defer();
 		if (articles[$category].length === 0) {
-			console.log('NewsService: no articles '+$category);
+			console.log('NewsService: no articles ' + $category);
 			self.init($category).then(function (initArticles) {
 				articles[$category] = initArticles;
 				deferred.resolve(initArticles);
 			});
 		} else {
-			console.log('NewsService: had articles '+$category);
+			console.log('NewsService: had articles ' + $category);
 			deferred.resolve(articles[$category]);
 		}
 		$ionicSlideBoxDelegate.update();
@@ -107,7 +111,7 @@ angular.module('greyback.services', [])
 
 
 	self.article = function ($articleIndex, $category) {
-		console.log('NewsService.article '+$category);
+		console.log('NewsService.article ' + $category);
 		var deferred = $q.defer();
 		if (articles[$category].length === 0) {
 			console.log('empty');
@@ -125,36 +129,41 @@ angular.module('greyback.services', [])
 	console.log('MessagesService');
 	var self = this;
 	var series = [];
+	var latestMessage = {};
+	var currentSeries = [];
 
 	self.local = function () {
 		console.log('MessagesService.local');
 		var deferred = $q.defer();
-		var localPosts = $localStorage.getArray('MessageSeries');
-		deferred.resolve(localPosts);
+		var localSeries = $localStorage.getArray('MessageSeries');
+		var localLatest = $localStorage.getArray('MessageLatest');
+		deferred.resolve([localSeries, localLatest]);
 		return deferred.promise;
 	}
 
 	self.remote = function () {
 		console.log('MessagesService.remote');
-		var promise = $http.get(DOMAIN + '/ajax/plugin/community/community_posts/json')
+		var promise = $http.get(DOMAIN + '/ajax/plugin/message/message_series/json/category:1')
 			.success(function (response, status, headers, config) {
 
 			if (response.status === 'SUCCESS') {
 				//empty articles
-				posts = [];
+				series = [];
+				latestMessage = {};
 				//populate
 				var temp = {};
 				angular.forEach(response.data, function (item) {
-					item.CommunityPost.body = onclickFix(item.CommunityPost.body);
-					posts.push(item);
+					series.push(item);
 					temp = item;
 				});
+				latestMessage = response.latest;
 
 				//save to cache
-				$localStorage.setArray('MessageSeries', posts);
+				$localStorage.setArray('MessageSeries', series);
+				$localStorage.setArray('MessageLatest', latestMessage);
 
 			} else {
-				alert('there was a server error for COMMUNITY');
+				alert('there was a server error for Messages');
 				console.log(response);
 			}
 		})
@@ -167,8 +176,8 @@ angular.module('greyback.services', [])
 	self.update = function () {
 		console.log('MessagesService.update');
 		var deferred = $q.defer();
-		self.remote().then(function (remotePosts) {
-			deferred.resolve(posts);
+		self.remote().then(function (remoteData) {
+			deferred.resolve(series);
 		});
 		return deferred.promise;
 	}
@@ -176,15 +185,17 @@ angular.module('greyback.services', [])
 	self.init = function () {
 		console.log('MessagesService.init');
 		var deferred = $q.defer();
-		self.local().then(function (storedPosts) {
-			if (storedPosts.length > 0) {
+
+		self.local().then(function (storedValues) {
+			if (storedValues[0].length > 0) {
 				console.log('MessagesService: use local');
-				posts = storedPosts;
-				deferred.resolve(posts);
+				series = storedValues[0];
+				latestMessage = storedValues[1];
+				deferred.resolve(series);
 			} else {
 				console.log('MessagesService: use remote');
-				self.remote().then(function (remotePosts) {
-					deferred.resolve(posts);
+				self.remote().then(function (remoteValues) {
+					deferred.resolve(series);
 				});
 			}
 		});
@@ -194,7 +205,7 @@ angular.module('greyback.services', [])
 	self.latest = function () {
 		console.log('MessagesService.latest');
 		var deferred = $q.defer();
-		if (posts.length === 0) {
+		if (series.length === 0) {
 			console.log('MessagesService: no posts');
 			self.init().then(function (initPosts) {
 				posts = initPosts;
@@ -202,21 +213,47 @@ angular.module('greyback.services', [])
 			});
 		} else {
 			console.log('MessagesService: had posts');
-			deferred.resolve(posts);
+			deferred.resolve(series);
 		}
 		return deferred.promise;
 	}
 
-	self.post = function ($postIndex) {
-		console.log('MessagesService.post');
+	self.latestMessage = function () {
+		return latestMessage;
+	}
+
+	self.getSeries = function (seriesId) {
+		console.log('MessagesService.getSeries');
 		var deferred = $q.defer();
-		if (posts.length === 0) {
+		var promise = $http.get(DOMAIN + '/ajax/plugin/message/message_messages/json/series:' + seriesId)
+			.success(function (response, status, headers, config) {
+			if (response.status === 'SUCCESS') {
+				currentSeries = [];
+				angular.forEach(response.data, function(item) {
+					item.displayDate = moment(item.MessageMessage.event_date).format("M/DD");
+					currentSeries.push(item);
+				})
+				deferred.resolve(currentSeries);
+			} else {
+				alert('there was a server error for Messages');
+				console.log(response);
+			}
+		})
+			.error(function (response, status, headers, config) {
+			console.log(['error', data, status, headers, config]);
+		});
+		return deferred.promise;
+	}
+	
+	self.sermon = function(sermonIndex) {
+		var deferred = $q.defer();
+		if (currentSeries.length === 0) {
 			console.log('empty');
 			$location.path('/tab/home');
 			$location.replace();
 			return null;
 		} else {
-			deferred.resolve(posts[$postIndex]);
+			deferred.resolve(currentSeries[sermonIndex]);
 		}
 		return deferred.promise;
 	}
