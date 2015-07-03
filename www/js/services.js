@@ -15,6 +15,7 @@ angular.module('greyback.services', [])
 		console.log('NewsService.local ' + $category);
 		var deferred = $q.defer();
 		var localArticles = $localStorage.getArray('NewsLatest.' + $category);
+		console.log(localArticles);
 		deferred.resolve(localArticles);
 		return deferred.promise;
 	}
