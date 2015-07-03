@@ -20,7 +20,9 @@ var onclickFix = function (html) {
 angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.core', 'ionic.service.push', 'ionic.service.deploy', 'ionic.service.analytics', 'greyback.controllers', 'greyback.services', 'greyback.utils'])
 
 .run(function ($ionicPlatform, $ionicAnalytics, ImgCache) {
+	console.log('run');
 	$ionicPlatform.ready(function () {
+		console.log('platform.ready');
 		$ionicAnalytics.register();
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -43,6 +45,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	}])
 
 .config(function ($ionicAppProvider, ImgCacheProvider, $stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+	console.log('config');
 	// Identify app
 	$ionicAppProvider.identify({
 		// The App ID (from apps.ionic.io) for the server
@@ -67,12 +70,15 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		controller: 'AppController',
 		resolve: {
 			headers: function (NewsService) {
+				console.log('menu headers resolve');
 				return NewsService.latest('headers');
 			},
 			articles: function (NewsService) {
+				console.log('menu articles resolve');
 				return NewsService.latest('articles');
 			},
 			series: function (MessagesService) {
+				console.log('menu series resolve');
 				return MessagesService.latest();
 			}
 		}
@@ -96,14 +102,16 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 				controller: 'HomeController',
 			}
 		},
-		resolve: {
-			headers: function (NewsService) {
-				return NewsService.latest('headers');
-			},
-			articles: function (NewsService) {
-				return NewsService.latest('articles');
-			}
-		}
+//		resolve: {
+//			headers: function (NewsService) {
+//				console.log('menu.tabs.home headers resolve');
+//				return NewsService.latest('headers');
+//			},
+//			articles: function (NewsService) {
+//				console.log('menu.tabs.home articles resolve');
+//				return NewsService.latest('articles');
+//			}
+//		}
 	})
 
 	.state('menu.tabs.article', {
@@ -116,6 +124,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			article: function (NewsService, $stateParams) {
+				console.log('menu.tabs.article articles resolve');
 				return NewsService.article($stateParams.articleIndex, $stateParams.category)
 			}
 		}
@@ -131,6 +140,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			post: function (CommunityService, $stateParams) {
+				console.log('menu.tabs.post post resolve');
 				return CommunityService.post($stateParams.postIndex)
 			}
 		}
@@ -146,6 +156,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			series: function (MessagesService) {
+				console.log('menu.tabs.series series resolve');
 				return MessagesService.latest();
 			}
 		}
@@ -171,6 +182,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			sermon: function (MessagesService, $stateParams) {
+				console.log('menu.tabs.sermon sermon resolve');
 				return MessagesService.sermon($stateParams.sermonIndex);
 			}
 		}
@@ -186,6 +198,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			articles: function (NewsService) {
+				console.log('menu.tabs.news articles resolve');
 				return NewsService.latest('articles');
 			}
 		}
@@ -201,12 +214,12 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		},
 		resolve: {
 			article: function (NewsService, $stateParams) {
-				console.log($stateParams);
+				console.log('menu.tabs.article_details article resolve');
 				return NewsService.article($stateParams.articleIndex, $stateParams.category)
 			}
 		}
 	})
-	
+
 	.state('menu.tabs.events', {
 		url: '/events',
 		views: {
@@ -215,7 +228,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		}
 	})
-	
+
 	.state('menu.tabs.giving', {
 		url: '/giving',
 		views: {

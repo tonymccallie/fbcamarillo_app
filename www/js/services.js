@@ -6,7 +6,7 @@ angular.module('greyback.services', [])
 	// 3 headers
 	// 1 general
 	var self = this;
-	var articles = {
+	self.articles = {
 		headers: [],
 		articles: []
 	};
@@ -37,17 +37,17 @@ angular.module('greyback.services', [])
 
 			if (response.status === 'SUCCESS') {
 				//empty articles
-				articles[$category] = [];
+				self.articles[$category] = [];
 				//populate
 				var temp = {};
 				angular.forEach(response.data, function (item) {
 					item.NewsArticle.body = onclickFix(item.NewsArticle.body);
-					articles[$category].push(item);
+					self.articles[$category].push(item);
 					temp = item;
 				});
 
 				//save to cache
-				$localStorage.setArray('NewsLatest.' + $category, articles[$category]);
+				$localStorage.setArray('NewsLatest.' + $category, self.articles[$category]);
 				$ionicSlideBoxDelegate.update();
 
 			} else {
@@ -65,7 +65,7 @@ angular.module('greyback.services', [])
 		console.log('NewsService.update ' + $category);
 		var deferred = $q.defer();
 		self.remote($category).then(function (remoteArticles) {
-			deferred.resolve(articles[$category]);
+			deferred.resolve(self.articles[$category]);
 		});
 		return deferred.promise;
 	}
@@ -76,18 +76,18 @@ angular.module('greyback.services', [])
 		self.local($category).then(function (storedArticles) {
 			if (storedArticles.length > 0) {
 				console.log('NewsService: use local ' + $category);
-				articles[$category] = storedArticles;
-				deferred.resolve(articles[$category]);
+				self.articles[$category] = storedArticles;
+				deferred.resolve(self.articles[$category]);
 			} else {
 				console.log('NewsService: use remote ' + $category);
 				self.remote($category).then(function (remoteArticles) {
-					deferred.resolve(articles[$category]);
+					deferred.resolve(self.articles[$category]);
 				});
 			}
 		});
 
-		$location.path('/tab/home');
-		$location.replace();
+//		$location.path('/tab/home');
+//		$location.replace();
 
 		return deferred.promise;
 	}
@@ -95,15 +95,15 @@ angular.module('greyback.services', [])
 	self.latest = function ($category) {
 		console.log('NewsService.latestHeaders ' + $category);
 		var deferred = $q.defer();
-		if (articles[$category].length === 0) {
+		if (self.articles[$category].length === 0) {
 			console.log('NewsService: no articles ' + $category);
 			self.init($category).then(function (initArticles) {
-				articles[$category] = initArticles;
+				self.articles[$category] = initArticles;
 				deferred.resolve(initArticles);
 			});
 		} else {
 			console.log('NewsService: had articles ' + $category);
-			deferred.resolve(articles[$category]);
+			deferred.resolve(self.articles[$category]);
 		}
 		$ionicSlideBoxDelegate.update();
 		return deferred.promise;
@@ -113,13 +113,13 @@ angular.module('greyback.services', [])
 	self.article = function ($articleIndex, $category) {
 		console.log('NewsService.article ' + $category);
 		var deferred = $q.defer();
-		if (articles[$category].length === 0) {
+		if (self.articles[$category].length === 0) {
 			console.log('empty');
 			$location.path('/tab/home');
 			$location.replace();
 			return null;
 		} else {
-			deferred.resolve(articles[$category][$articleIndex]);
+			deferred.resolve(self.articles[$category][$articleIndex]);
 		}
 		return deferred.promise;
 	}
