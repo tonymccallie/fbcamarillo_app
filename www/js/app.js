@@ -257,7 +257,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	})
 
 	.state('menu.tabs.staff', {
-		url: '/settings',
+		url: '/staff',
 		views: {
 			'tab-static': {
 				templateUrl: 'templates/staff.html',
