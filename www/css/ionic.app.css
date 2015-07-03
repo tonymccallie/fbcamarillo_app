@@ -7719,7 +7719,7 @@ a.button {
   font-family: 'LatoLightItalic';
   src: url('../fonts/Lato-LightItalic.ttf') format('truetype'); }
 
-.pane, .view {
+.pane, .view, .menu-right {
   background-image: url(../img/background-01.png);
   background-size: cover; }
 
@@ -7845,8 +7845,8 @@ div.slider-pager {
 .threeleaf-giving {
   content: url(../img/fbc_app_icon_giving.png); }
 
-.item-complex .item-content, .item-radio .item-content {
-  background: #faf1d5; }
+.item-complex .item-content, .item-radio .item-content, .item {
+  background-color: rgba(250, 241, 213, 0.2); }
 
 .series_listing {
   padding: 5px;
@@ -7929,7 +7929,7 @@ div.slider-pager {
   padding-left: 76px;
   position: relative; }
   .event_list .item .accentCol {
-    background: #e6e6e6;
+    background-color: rgba(250, 241, 213, 0.7);
     position: absolute;
     top: 0;
     left: 0;

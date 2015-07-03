@@ -28,7 +28,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 @import "scss/fonts.scss";
 
-.pane, .view {
+.pane, .view, .menu-right {
 	background-image: url(../img/background-01.png);
 	background-size: cover;
 }
@@ -181,8 +181,8 @@ div.slider-pager {
 .threeleaf-events {content: url(../img/fbc_app_icon_events.png);}
 .threeleaf-giving {content: url(../img/fbc_app_icon_giving.png);}
 
-.item-complex .item-content, .item-radio .item-content {
-	background: $light;
+.item-complex .item-content, .item-radio .item-content, .item {
+	background-color: rgba(250,241,213,0.2);
 }
 
 .series_listing {
@@ -295,7 +295,7 @@ div.slider-pager {
 		padding-left: 76px;
 		position: relative;
 		.accentCol {
-			background: $accentGrey;
+			background-color: rgba(250,241,213,0.7);
 			position: absolute;
 			top: 0;
 			left: 0;
