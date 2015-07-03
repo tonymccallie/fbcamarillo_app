@@ -104,14 +104,14 @@ angular.module('greyback.controllers', [])
 .controller('MessagesController', function ($scope, $stateParams, $location, MessagesService, series) {
 	console.log('MessagesController');
 	$scope.series = series;
-	$scope.latestMessage = MessagesService.latestMessage();
+	$scope.latestMessage = MessagesService.latestMsg();
 	
 	$scope.update = function () {
 		console.log('SeriesController.update');
 		var seriesPromise = MessagesService.update();
 
 		seriesPromise.then(function (data) {
-			$scope.latestMessage = MessagesService.latestMessage();
+			$scope.latestMessage = MessagesService.latestMsg();
 			$scope.series = series;
 			$scope.$broadcast('scroll.refreshComplete');
 		});

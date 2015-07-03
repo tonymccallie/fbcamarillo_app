@@ -129,8 +129,8 @@ angular.module('greyback.services', [])
 .service('MessagesService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
 	console.log('MessagesService');
 	var self = this;
-	var series = [];
-	var latestMessage = {};
+	self.series = [];
+	self.latestMessage = {};
 	var currentSeries = [];
 
 	self.local = function () {
@@ -149,19 +149,19 @@ angular.module('greyback.services', [])
 
 			if (response.status === 'SUCCESS') {
 				//empty articles
-				series = [];
-				latestMessage = {};
+				self.series = [];
+				self.latestMessage = {};
 				//populate
 				var temp = {};
 				angular.forEach(response.data, function (item) {
-					series.push(item);
+					self.series.push(item);
 					temp = item;
 				});
-				latestMessage = response.latest;
+				self.latestMessage = response.latest;
 
 				//save to cache
-				$localStorage.setArray('MessageSeries', series);
-				$localStorage.setObject('MessageLatest', latestMessage);
+				$localStorage.setArray('MessageSeries', self.series);
+				$localStorage.setObject('MessageLatest', self.latestMessage);
 
 			} else {
 				alert('there was a server error for Messages');
@@ -178,7 +178,7 @@ angular.module('greyback.services', [])
 		console.log('MessagesService.update');
 		var deferred = $q.defer();
 		self.remote().then(function (remoteData) {
-			deferred.resolve(series);
+			deferred.resolve(self.series);
 		});
 		return deferred.promise;
 	}
@@ -190,13 +190,13 @@ angular.module('greyback.services', [])
 		self.local().then(function (storedValues) {
 			if (storedValues[0].length > 0) {
 				console.log('MessagesService: use local');
-				series = storedValues[0];
-				latestMessage = storedValues[1];
-				deferred.resolve(series);
+				self.series = storedValues[0];
+				self.latestMessage = storedValues[1];
+				deferred.resolve(self.series);
 			} else {
 				console.log('MessagesService: use remote');
 				self.remote().then(function (remoteValues) {
-					deferred.resolve(series);
+					deferred.resolve(self.series);
 				});
 			}
 		});
@@ -206,21 +206,21 @@ angular.module('greyback.services', [])
 	self.latest = function () {
 		console.log('MessagesService.latest');
 		var deferred = $q.defer();
-		if (series.length === 0) {
+		if (self.series.length === 0) {
 			console.log('MessagesService: no posts');
 			self.init().then(function (initPosts) {
-				posts = initPosts;
+				self.series = initPosts;
 				deferred.resolve(initPosts);
 			});
 		} else {
 			console.log('MessagesService: had posts');
-			deferred.resolve(series);
+			deferred.resolve(self.series);
 		}
 		return deferred.promise;
 	}
 
-	self.latestMessage = function () {
-		return latestMessage;
+	self.latestMsg = function () {
+		return self.latestMessage;
 	}
 
 	self.getSeries = function (seriesId) {
