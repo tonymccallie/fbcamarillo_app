@@ -40,6 +40,7 @@ angular.module('greyback.services', [])
 				self.articles[$category] = [];
 				//populate
 				var temp = {};
+				console.log(response.data);
 				angular.forEach(response.data, function (item) {
 					item.NewsArticle.body = onclickFix(item.NewsArticle.body);
 					self.articles[$category].push(item);
@@ -48,7 +49,9 @@ angular.module('greyback.services', [])
 
 				//save to cache
 				$localStorage.setArray('NewsLatest.' + $category, self.articles[$category]);
-				$ionicSlideBoxDelegate.update();
+				if($category === 'headers') {
+					$ionicSlideBoxDelegate.update();
+				}
 
 			} else {
 				alert('there was a server error for NEWS');
