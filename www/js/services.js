@@ -137,7 +137,7 @@ angular.module('greyback.services', [])
 		console.log('MessagesService.local');
 		var deferred = $q.defer();
 		var localSeries = $localStorage.getArray('MessageSeries');
-		var localLatest = $localStorage.getArray('MessageLatest');
+		var localLatest = $localStorage.getObject('MessageLatest');
 		deferred.resolve([localSeries, localLatest]);
 		return deferred.promise;
 	}
@@ -161,7 +161,7 @@ angular.module('greyback.services', [])
 
 				//save to cache
 				$localStorage.setArray('MessageSeries', series);
-				$localStorage.setArray('MessageLatest', latestMessage);
+				$localStorage.setObject('MessageLatest', latestMessage);
 
 			} else {
 				alert('there was a server error for Messages');

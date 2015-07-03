@@ -77,10 +77,10 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 				console.log('menu articles resolve');
 				return NewsService.latest('articles');
 			},
-			series: function (MessagesService) {
-				console.log('menu series resolve');
-				return MessagesService.latest();
-			}
+//			series: function (MessagesService) {
+//				console.log('menu series resolve');
+//				return MessagesService.latest();
+//			}
 		}
 	})
 
