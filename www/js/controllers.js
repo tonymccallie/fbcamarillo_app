@@ -159,18 +159,23 @@ angular.module('greyback.controllers', [])
 
 	$scope.update = function () {
 		console.log('HomeController.update');
-		var headersPromise = NewsService.update('headers');
+		//var headersPromise = NewsService.update('headers');
 		var newsPromise = NewsService.update('articles');
-
-		$q.all([headersPromise, newsPromise]).then(function (data) {
-			$scope.headers = data[0];
-			$scope.articles = data[1];
+		
+		newsPromise.then(function(data) {
+			$scope.articles = data;
 			$scope.$broadcast('scroll.refreshComplete');
-			$ionicSlideBoxDelegate.update();
 		});
+
+//		$q.all([headersPromise, newsPromise]).then(function (data) {
+//			$scope.headers = data[0];
+//			$scope.articles = data[1];
+//			$scope.$broadcast('scroll.refreshComplete');
+//			$ionicSlideBoxDelegate.update();
+//		});
 	}
 	
-	$scope.update();
+	//$scope.update();
 })
 
 .controller('NewsController', function ($scope, $sce, article) {
