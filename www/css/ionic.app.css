@@ -7735,8 +7735,9 @@ body {
     color: #b02b1a;
     text-decoration: none;
     font-family: "LatoBold"; }
-  .padding a.button {
-    font-family: "LatoLight"; }
+  .padding .button {
+    font-family: "LatoLight";
+    color: #faf1d5; }
 
 .scaleVid {
   position: relative;

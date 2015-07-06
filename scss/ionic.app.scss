@@ -48,8 +48,9 @@ body {
 		text-decoration: none;
 		font-family: "LatoBold";
 	}
-	a.button {
+	.button {
 		font-family: "LatoLight";
+		color: $light;
 	}
 }
 

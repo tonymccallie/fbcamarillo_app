@@ -28,7 +28,7 @@ angular.module('greyback.services', [])
 			break;
 		default:
 			//category_id 1 = general
-			var news_url = '/ajax/plugin/news/news_articles/json/limit:10/category:1';
+			var news_url = '/ajax/plugin/news/news_articles/json/limit:3/category:1';
 			break;
 		}
 		
