@@ -248,6 +248,16 @@ angular.module('greyback.services', [])
 		return deferred.promise;
 	}
 	
+	self.latest_sermon = function() {
+		if(!self.latestMessage.MessageMessage) {
+			$location.path('/tab/home');
+			$location.replace();
+			return null;
+		} else {
+			return self.latestMessage;
+		}	
+	}
+	
 	self.sermon = function(sermonIndex) {
 		var deferred = $q.defer();
 		if (currentSeries.length === 0) {

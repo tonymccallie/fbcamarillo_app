@@ -2,7 +2,7 @@
 	<ion-content class="has-header">
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="update()"></ion-refresher>
 		<div class="scaleVid ratio16x9">
-			<a ng-if="latestMessage.MessageSeries.MediaImage.filename.length > 0" ui-sref="menu.tabs.sermon({messageId: latestMessage.MessageMessage.id})">
+			<a ng-if="latestMessage.MessageSeries.MediaImage.filename.length > 0" ui-sref="menu.tabs.latest_sermon">
 				<img img-cache ic-src="{{imageDir+latestMessage.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto/{{latestMessage.MediaVideo.preview}}" style="width: 100%;" />
 				<h4 class="latest_title">{{latestMessage.MessageMessage.title}}</h4>
 			</a>

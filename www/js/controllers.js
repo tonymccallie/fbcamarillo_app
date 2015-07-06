@@ -109,8 +109,8 @@ angular.module('greyback.controllers', [])
 		AudioFactory.scrub(percentage);
 	}
 
-	$scope.playVideo = function () {
-		$scope.videoPlayer.play();
+	$scope.playVideo = function (playerId) {
+		document.getElementById(playerId).play();
 	};
 })
 

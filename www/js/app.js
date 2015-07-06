@@ -187,6 +187,21 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 			}
 		}
 	})
+	
+	.state('menu.tabs.latest_sermon', {
+		url: '/latest_sermon',
+		views: {
+			'tab-series': {
+				templateUrl: 'templates/sermon.html',
+				controller: 'MessageController'
+			}
+		},
+		resolve: {
+			sermon: function (MessagesService) {
+				return MessagesService.latest_sermon();
+			}
+		}
+	})
 
 	.state('menu.tabs.news', {
 		url: "/news",
