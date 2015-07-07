@@ -17,7 +17,7 @@ var onclickFix = function (html) {
 	return html.replace(/href=\"(.+?)\"/gi, 'onclick="window.open(\'$1\',\'_system\',\'location=yes\');"');
 }
 
-angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.core', 'ionic.service.push', 'ionic.service.deploy', 'ionic.service.analytics', 'greyback.controllers', 'greyback.services', 'greyback.utils'])
+angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.core', 'ionic.service.push', 'ionic.service.deploy', 'ionic.service.analytics', 'ionic.ion.autoListDivider', 'greyback.controllers', 'greyback.services', 'greyback.utils'])
 
 .run(function ($ionicPlatform, $ionicAnalytics, $cordovaSplashscreen, ImgCache) {
 	console.log('run');
@@ -239,7 +239,30 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 		url: '/events',
 		views: {
 			'tab-giving': {
-				templateUrl: 'templates/events.html'
+				templateUrl: 'templates/events.html',
+				controller: 'CalendarController'
+			}
+		},
+		resolve: {
+			events: function (CalendarService) {
+				console.log('menu.tabs.events upcoming resolve');
+				return CalendarService.upcoming()
+			}
+		}
+	})
+	
+	.state('menu.tabs.event', {
+		url: '/event/:eventIndex',
+		views: {
+			'tab-giving': {
+				templateUrl: 'templates/event.html',
+				controller: 'EventController'
+			}
+		},
+		resolve: {
+			event: function (CalendarService, $stateParams) {
+				console.log('menu.tabs.event event resolve');
+				return CalendarService.event($stateParams.eventIndex);
 			}
 		}
 	})

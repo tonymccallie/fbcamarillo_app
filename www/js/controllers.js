@@ -218,6 +218,29 @@ angular.module('greyback.controllers', [])
 	$scope.sermon = sermon;
 })
 
+.controller('CalendarController', function ($scope, $stateParams, $location, events) {
+	console.log('CalendarController');
+	console.log(events);
+	$scope.events = events;
+	$scope.dividerFunction = function(key) {
+		return key;
+	}
+	
+	if (typeof $stateParams.eventIndex !== 'undefined') {
+		$scope.selectedSeries = $scope.series[$stateParams.seriesIndex];
+		MessagesService.getSeries($scope.selectedSeries.id).then(function(data) {
+			$scope.sermons = data;
+		});
+	}
+})
+
+.controller('EventController', function ($scope, $sce, event) {
+	$scope.event = event;
+	$scope.trust = function (snippet) {
+		return $sce.trustAsHtml(snippet);
+	};
+})
+
 .controller('StaffController', function ($scope, $stateParams, $location) {
 	console.log('StaffController');
 })

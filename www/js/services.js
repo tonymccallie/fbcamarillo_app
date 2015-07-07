@@ -40,7 +40,6 @@ angular.module('greyback.services', [])
 				self.articles[$category] = [];
 				//populate
 				var temp = {};
-				console.log(response.data);
 				angular.forEach(response.data, function (item) {
 					item.NewsArticle.body = onclickFix(item.NewsArticle.body);
 					self.articles[$category].push(item);
@@ -270,4 +269,107 @@ angular.module('greyback.services', [])
 		}
 		return deferred.promise;
 	}
+})
+
+.service('CalendarService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
+	///ajax/plugin/calendar/calendar_events/json/calendar:1/limit:20
+	console.log('CalendarService');
+	var self = this;
+	self.events = [];
+
+	self.local = function () {
+		console.log('CalendarService.local');
+		var deferred = $q.defer();
+		var localEvents = $localStorage.getArray('CalendarEvents');
+		deferred.resolve(localEvents);
+		return deferred.promise;
+	}
+
+	self.remote = function () {
+		console.log('CalendarService.remote');
+		var promise = $http.get(DOMAIN + '/ajax/plugin/calendar/calendar_events/json/calendar:1/limit:20')
+			.success(function (response, status, headers, config) {
+
+			if (response.status === 'SUCCESS') {
+				//empty articles
+				self.events = [];
+				//populate
+				angular.forEach(response.data, function (item) {
+					item.displayDate = moment(item.occurrence_day).format("M/DD");
+					item.displayMonth = moment(item.occurrence_day).format("MMMM");
+					self.events.push(item);
+				});
+
+				//save to cache
+				$localStorage.setArray('CalendarEvents', self.events);
+
+			} else {
+				alert('there was a server error for Messages');
+				console.log(response);
+			}
+		})
+			.error(function (response, status, headers, config) {
+			console.log(['error', data, status, headers, config]);
+		});
+		return promise;
+	}
+
+	self.update = function () {
+		console.log('CalendarService.update');
+		var deferred = $q.defer();
+		self.remote().then(function (remoteData) {
+			deferred.resolve(self.events);
+		});
+		return deferred.promise;
+	}
+
+	self.init = function () {
+		console.log('CalendarService.init');
+		var deferred = $q.defer();
+
+		self.local().then(function (storedValues) {
+			if (storedValues.length > 0) {
+				console.log('CalendarService: use local');
+				self.events = storedValues;
+				deferred.resolve(self.events);
+			} else {
+				console.log('CalendarService: use remote');
+				self.remote().then(function (remoteValues) {
+					deferred.resolve(self.events);
+				});
+			}
+		});
+		return deferred.promise;
+	}
+
+	self.upcoming = function () {
+		console.log('CalendarService.latest');
+		var deferred = $q.defer();
+		if (self.events.length === 0) {
+			console.log('CalendarService: no events');
+			self.init().then(function (initEvents) {
+				self.events = initEvents;
+				deferred.resolve(initEvents);
+			});
+		} else {
+			console.log('CalendarService: had events');
+			deferred.resolve(self.events);
+		}
+		return deferred.promise;
+	}
+	
+	self.event = function(eventIndex) {
+		console.log('CalendarService.event: '+ eventIndex);
+		var deferred = $q.defer();
+		if (self.events.length === 0) {
+			console.log('empty');
+			$location.path('/tab/home');
+			$location.replace();
+			return null;
+		} else {
+			deferred.resolve(self.events[eventIndex]);
+		}
+		return deferred.promise;
+	}
+	
 })
