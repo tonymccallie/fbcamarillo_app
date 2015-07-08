@@ -5,7 +5,7 @@
 		</div>
 		<div class="threeleaf-separator">{{event.title}}</div>
 		<div class="padding">
-			{{event.body}}
+			<div ng-bind-html="trust(event.body)"></div>
 		</div>
 	</ion-content>
 </ion-view>
