@@ -313,7 +313,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	.state('menu.tabs.staffmember', {
 		url: '/staffmember/:departmentIndex/:staffIndex',
 		views: {
-			'tab-giving': {
+			'tab-static': {
 				templateUrl: 'templates/staffmember.html',
 				controller: 'StaffmemberController'
 			}
