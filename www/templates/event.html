@@ -5,7 +5,9 @@
 		</div>
 		<div class="threeleaf-separator">{{event.title}}</div>
 		<div class="padding">
+			<h2>{{event.displayDate}}</h2>
 			<div ng-bind-html="trust(event.body)"></div>
+			<div ng-if="event.body.length === 0">No further information available</div>
 		</div>
 	</ion-content>
 </ion-view>

@@ -7,7 +7,7 @@
 		<div class="list staff_list" ng-repeat="department in departments">
 			<div class="item item-divider">{{department.StaffDepartment.title}}</div>
 			<a ui-sref="menu.tabs.staffmember({departmentIndex: $parent.$index, staffIndex: $index})" class="item item-avatar" ng-repeat="staff in department.StaffLink">
-				<img ng-if="staff.StaffMember.MediaImage.filename" img-cache ic-src="{{imageDir+staff.StaffMember.MediaImage.filename}}/width:400/height:400/crop:true/zoom:auto/{{staff.StaffMember.MediaImage.filename}}" />
+				<img ng-if="staff.StaffMember.ThumbnailImage.filename" img-cache ic-src="{{imageDir+staff.StaffMember.ThumbnailImage.filename}}/width:400/height:400/crop:true/zoom:auto/{{staff.StaffMember.ThumbnailImage.filename}}" />
 				<h2>{{staff.StaffMember.first_name}} {{staff.StaffMember.last_name}}</h2>
 				<p>{{staff.StaffMember.title}}</p>
 			</a>
