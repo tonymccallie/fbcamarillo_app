@@ -1,0 +1,13 @@
+<ion-view title="Staff">
+	<ion-content has-bouncing="false" class="">
+		<div ng-if="staff.StaffMember.MediaImage.filename" class="scaleVid ratio16x9">
+			<img img-cache ic-src="{{imageDir+staff.StaffMember.MediaImage.filename}}/width:800/height:450/crop:true/zoom:auto/{{staff.StaffMember.MediaImage.filename}}" />
+		</div>
+		<div class="threeleaf-separator">{{staff.StaffMember.first_name}} {{staff.StaffMember.last_name}}</div>
+		<div class="padding">
+			<h2>{{staff.StaffMember.first_name}} {{staff.StaffMember.last_name}}</h2>
+			<p>{{staff.StaffMember.title}}</p>
+			<div ng-bind-html="trust(staff.StaffMember.bio)"></div>
+		</div>
+	</ion-content>
+</ion-view>

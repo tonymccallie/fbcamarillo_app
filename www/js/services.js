@@ -272,7 +272,6 @@ angular.module('greyback.services', [])
 })
 
 .service('CalendarService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
-	///ajax/plugin/calendar/calendar_events/json/calendar:1/limit:20
 	console.log('CalendarService');
 	var self = this;
 	self.events = [];
@@ -304,7 +303,7 @@ angular.module('greyback.services', [])
 				$localStorage.setArray('CalendarEvents', self.events);
 
 			} else {
-				alert('there was a server error for Messages');
+				alert('there was a server error for calendar');
 				console.log(response);
 			}
 		})
@@ -343,7 +342,7 @@ angular.module('greyback.services', [])
 	}
 
 	self.upcoming = function () {
-		console.log('CalendarService.latest');
+		console.log('CalendarService.upcoming');
 		var deferred = $q.defer();
 		if (self.events.length === 0) {
 			console.log('CalendarService: no events');
@@ -373,3 +372,104 @@ angular.module('greyback.services', [])
 	}
 	
 })
+
+.service('StaffService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
+	console.log('StaffService');
+	var self = this;
+	self.departments = [];
+
+	self.local = function () {
+		console.log('StaffService.local');
+		var deferred = $q.defer();
+		var localDepartments = $localStorage.getArray('Staff');
+		deferred.resolve(localDepartments);
+		return deferred.promise;
+	}
+
+	self.remote = function () {
+		console.log('StaffService.remote');
+		var promise = $http.get(DOMAIN + '/ajax/plugin/staff/staff_departments/json')
+			.success(function (response, status, headers, config) {
+
+			if (response.status === 'SUCCESS') {
+				//empty articles
+				self.departments = [];
+				//populate
+				angular.forEach(response.data, function (item) {
+					self.departments.push(item);
+				});
+
+				//save to cache
+				$localStorage.setArray('Staff', self.departments);
+				console.log(self.departments);
+
+			} else {
+				alert('there was a server error for staff');
+				console.log(response);
+			}
+		})
+			.error(function (response, status, headers, config) {
+			console.log(['error', data, status, headers, config]);
+		});
+		return promise;
+	}
+
+	self.update = function () {
+		console.log('StaffService.update');
+		var deferred = $q.defer();
+		self.remote().then(function (remoteData) {
+			deferred.resolve(self.departments);
+		});
+		return deferred.promise;
+	}
+
+	self.init = function () {
+		console.log('StaffService.init');
+		var deferred = $q.defer();
+
+		self.local().then(function (storedValues) {
+			if (storedValues.length > 0) {
+				console.log('StaffService: use local');
+				self.departments = storedValues;
+				deferred.resolve(self.departments);
+			} else {
+				console.log('StaffService: use remote');
+				self.remote().then(function (remoteValues) {
+					deferred.resolve(self.departments);
+				});
+			}
+		});
+		return deferred.promise;
+	}
+
+	self.listing = function () {
+		console.log('StaffService.listing');
+		var deferred = $q.defer();
+		if (self.departments.length === 0) {
+			console.log('StaffService: no departments');
+			self.init().then(function (initValues) {
+				self.departments = initValues;
+				deferred.resolve(self.departments);
+			});
+		} else {
+			console.log('StaffService: had departments');
+			deferred.resolve(self.departments);
+		}
+		return deferred.promise;
+	}
+	
+	self.staff = function(departmentIndex, staffIndex) {
+		console.log('StaffService.staff: '+ departmentIndex);
+		var deferred = $q.defer();
+		if (self.departments.length === 0) {
+			console.log('empty');
+			$location.path('/tab/home');
+			$location.replace();
+			return null;
+		} else {
+			deferred.resolve(self.departments[departmentIndex]['StaffLink'][staffIndex]);
+		}
+		return deferred.promise;
+	}
+	
+});

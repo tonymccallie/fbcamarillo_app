@@ -7849,7 +7849,7 @@ div.slider-pager {
 .item-complex .item-content, .item-radio .item-content, .item {
   background-color: rgba(250, 241, 213, 0.2); }
 
-.item.item-divider {
+.event_list .item.item-divider {
   background-color: rgba(250, 241, 213, 0.7); }
 
 .series_listing {

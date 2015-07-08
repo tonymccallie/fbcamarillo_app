@@ -1,6 +1,6 @@
 angular.module('greyback.controllers', [])
 
-.controller('AppController', function ($scope, $ionicDeploy, $ionicActionSheet, $location, $ionicPlatform, $state, $ionicSideMenuDelegate, AudioFactory) {
+.controller('AppController', function ($scope, $sce, $ionicDeploy, $ionicActionSheet, $location, $ionicPlatform, $state, $ionicSideMenuDelegate, AudioFactory) {
 	console.log('AppController');
 	//app wide variables
 	$scope.DOMAIN = DOMAIN;
@@ -112,6 +112,10 @@ angular.module('greyback.controllers', [])
 	$scope.playVideo = function (playerId) {
 		document.getElementById(playerId).play();
 	};
+	
+	$scope.trust = function (snippet) {
+		return $sce.trustAsHtml(snippet);
+	};
 })
 
 .controller('HomeController', function ($scope, $q, $ionicModal, $timeout, $ionicSlideBoxDelegate, articles, headers, ImgCache, NewsService) {
@@ -180,9 +184,6 @@ angular.module('greyback.controllers', [])
 
 .controller('NewsController', function ($scope, $sce, article) {
 	$scope.article = article;
-	$scope.trust = function (snippet) {
-		return $sce.trustAsHtml(snippet);
-	};
 })
 
 .controller('MessagesController', function ($scope, $stateParams, $location, MessagesService, series) {
@@ -236,13 +237,20 @@ angular.module('greyback.controllers', [])
 
 .controller('EventController', function ($scope, $sce, event) {
 	$scope.event = event;
-	$scope.trust = function (snippet) {
-		return $sce.trustAsHtml(snippet);
-	};
 })
 
-.controller('StaffController', function ($scope, $stateParams, $location) {
+.controller('StaffController', function ($scope, $stateParams, $location, StaffService, departments) {
 	console.log('StaffController');
+	$scope.departments = departments;
+	StaffService.update().then(function(data) {
+		console.log(data);
+		$scope.departments = departments;
+	});
+})
+
+.controller('StaffmemberController', function ($scope, $stateParams, $location, staff) {
+	console.log('StaffmemberController');
+	$scope.staff = staff;
 })
 
 .controller('SettingsController', function ($scope, $ionicDeploy) {

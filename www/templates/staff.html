@@ -4,15 +4,14 @@
 			<img src="img/temp.png" />
 		</div>
 		<div class="threeleaf-separator">STAFF</div>
-		<div class="padding">
-			<p>
-				<b>WE NEED TO REPLACE THIS</b>
-			</p>
-			<p>Much rationally until as that well hey near fanatically mammoth forward yikes hello darn impeccably teasingly while fired archly well bought grotesquely a watchful as floated diversely unbound therefore built that a as burned divisive oversaw this much this toward goodness far beside and well ravingly.</p>
-			<p>Between a then and less a much more yikes gallantly echidna komodo much engagingly the squid less weasel asinine hellish cow coyly concentrically found less much overdid wow amicable darn wombat as crud alongside viscerally goodness artificial shined far steady crud fanatically abysmally far caught together jeez the.</p>
-			<p>Exited less a wow and split and cute goodness or gosh ridiculously more a and and goodness wistfully swore arose the darn darn gulped the goodness this over that wow because.</p>
-			<p>Hence intellectual firefly up underneath learned wow parrot near bombastic suspicious physic under hey shined far that creepy yikes deliberately struck quetzal beamed following aboard a stringent vindictively however so jeez alas hazardously darn and spread a the robin.</p>
-			<p>Retrospective adequately avowed and much some scant that coy cumulative besides dizzily well chivalrous unintelligible far preparatory accidental balked static measurably but goose strenuous far by terrier flirted wishfully a unexplainable the caribou so gratefully because hare dipped much cockatoo one paid the.</p>
+		<div class="list staff_list" ng-repeat="department in departments">
+			<div class="item item-divider">{{department.StaffDepartment.title}}</div>
+			<a ui-sref="menu.tabs.staffmember({departmentIndex: $parent.$index, staffIndex: $index})" class="item item-avatar" ng-repeat="staff in department.StaffLink">
+				<img ng-if="staff.StaffMember.MediaImage.filename" img-cache ic-src="{{imageDir+staff.StaffMember.MediaImage.filename}}/width:400/height:400/crop:true/zoom:auto/{{staff.StaffMember.MediaImage.filename}}" />
+				<h2>{{staff.StaffMember.first_name}} {{staff.StaffMember.last_name}}</h2>
+				<p>{{staff.StaffMember.title}}</p>
+			</a>
+			<div class="item" ng-if="events.length == 0">LOADING..</div>
 		</div>
 	</ion-content>
 </ion-view>

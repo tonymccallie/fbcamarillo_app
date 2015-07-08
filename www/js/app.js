@@ -301,6 +301,28 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 				templateUrl: 'templates/staff.html',
 				controller: 'StaffController'
 			}
+		},
+		resolve: {
+			departments: function(StaffService) {
+				console.log('menu.tabs.staff departments resolve');
+				return StaffService.listing();
+			}
+		}
+	})
+	
+	.state('menu.tabs.staffmember', {
+		url: '/staffmember/:departmentIndex/:staffIndex',
+		views: {
+			'tab-giving': {
+				templateUrl: 'templates/staffmember.html',
+				controller: 'StaffmemberController'
+			}
+		},
+		resolve: {
+			staff: function (StaffService, $stateParams) {
+				console.log('menu.tabs.staffmemeber staff resolve');
+				return StaffService.staff($stateParams.departmentIndex, $stateParams.staffIndex);
+			}
 		}
 	})
 
