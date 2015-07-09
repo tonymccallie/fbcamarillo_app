@@ -31,7 +31,7 @@ angular.module('greyback.services', [])
 			var news_url = '/ajax/plugin/news/news_articles/json/limit:3/category:1';
 			break;
 		}
-		
+
 		var promise = $http.get(DOMAIN + news_url)
 			.success(function (response, status, headers, config) {
 
@@ -48,7 +48,7 @@ angular.module('greyback.services', [])
 
 				//save to cache
 				$localStorage.setArray('NewsLatest.' + $category, self.articles[$category]);
-				if($category === 'headers') {
+				if ($category === 'headers') {
 					$ionicSlideBoxDelegate.update();
 				}
 
@@ -88,8 +88,8 @@ angular.module('greyback.services', [])
 			}
 		});
 
-//		$location.path('/tab/home');
-//		$location.replace();
+		//		$location.path('/tab/home');
+		//		$location.replace();
 
 		return deferred.promise;
 	}
@@ -231,7 +231,7 @@ angular.module('greyback.services', [])
 			.success(function (response, status, headers, config) {
 			if (response.status === 'SUCCESS') {
 				currentSeries = [];
-				angular.forEach(response.data, function(item) {
+				angular.forEach(response.data, function (item) {
 					item.displayDate = moment(item.MessageMessage.event_date).format("M/DD");
 					currentSeries.push(item);
 				})
@@ -246,18 +246,18 @@ angular.module('greyback.services', [])
 		});
 		return deferred.promise;
 	}
-	
-	self.latest_sermon = function() {
-		if(!self.latestMessage.MessageMessage) {
+
+	self.latest_sermon = function () {
+		if (!self.latestMessage.MessageMessage) {
 			$location.path('/tab/home');
 			$location.replace();
 			return null;
 		} else {
 			return self.latestMessage;
-		}	
+		}
 	}
-	
-	self.sermon = function(sermonIndex) {
+
+	self.sermon = function (sermonIndex) {
 		var deferred = $q.defer();
 		if (currentSeries.length === 0) {
 			console.log('empty');
@@ -356,9 +356,9 @@ angular.module('greyback.services', [])
 		}
 		return deferred.promise;
 	}
-	
-	self.event = function(eventIndex) {
-		console.log('CalendarService.event: '+ eventIndex);
+
+	self.event = function (eventIndex) {
+		console.log('CalendarService.event: ' + eventIndex);
 		var deferred = $q.defer();
 		if (self.events.length === 0) {
 			console.log('empty');
@@ -370,7 +370,7 @@ angular.module('greyback.services', [])
 		}
 		return deferred.promise;
 	}
-	
+
 })
 
 .service('StaffService', function ($q, $http, $location, $ionicSlideBoxDelegate, $localStorage, $state) {
@@ -457,9 +457,9 @@ angular.module('greyback.services', [])
 		}
 		return deferred.promise;
 	}
-	
-	self.staff = function(departmentIndex, staffIndex) {
-		console.log('StaffService.staff: '+ departmentIndex);
+
+	self.staff = function (departmentIndex, staffIndex) {
+		console.log('StaffService.staff: ' + departmentIndex);
 		var deferred = $q.defer();
 		if (self.departments.length === 0) {
 			console.log('empty');
@@ -471,5 +471,43 @@ angular.module('greyback.services', [])
 		}
 		return deferred.promise;
 	}
-	
+
+})
+
+.service('PtrService', function ($timeout, $ionicScrollDelegate) {
+	/**
+	 * Trigger the pull-to-refresh on a specific scroll view delegate handle.
+	 * @param {string} delegateHandle - The `delegate-handle` assigned to the `ion-content` in the view.
+	 */
+	this.triggerPtr = function (delegateHandle) {
+
+		$timeout(function () {
+
+			var scrollView = $ionicScrollDelegate.$getByHandle(delegateHandle).getScrollView();
+
+			if (!scrollView) return;
+
+			scrollView.__publish(
+				scrollView.__scrollLeft, -scrollView.__refreshHeight,
+				scrollView.__zoomLevel, true);
+
+			var d = new Date();
+
+			scrollView.refreshStartTime = d.getTime();
+
+			scrollView.__refreshActive = true;
+			scrollView.__refreshHidden = false;
+			if (scrollView.__refreshShow) {
+				scrollView.__refreshShow();
+			}
+			if (scrollView.__refreshActivate) {
+				scrollView.__refreshActivate();
+			}
+			if (scrollView.__refreshStart) {
+				scrollView.__refreshStart();
+			}
+
+		});
+
+	}
 });

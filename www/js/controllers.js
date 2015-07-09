@@ -9,32 +9,32 @@ angular.module('greyback.controllers', [])
 	$scope.log = function (obj) {
 		$scope.logs.push(moment().format('h:mm:ss') + ': ' + obj);
 	}
-	
+
 	$ionicPlatform.ready(function () {
 		$scope.log('Ionic Deploy: Checking for updates');
-//		$ionicDeploy.check().then(function (hasUpdate) {
-//			$scope.log('Ionic Deploy: Update available: ' + hasUpdate);
-//			$scope.hasUpdate = hasUpdate;
-//			if(hasUpdate) {
-//				$ionicActionSheet.show({
-//					titleText: 'There is an update available',
-//					buttons: [
-//						{ text: 'Update Now' }
-//					],
-//					buttonClicked: function(index) {
-//						$location.path('/menu/tabs/settings');
-//					},
-//					cancelText: 'Later',
-//					cancel: function() {
-//						return true;
-//					}
-//				});
-//			}
-//		}, function (err) {
-//			$scope.log('Ionic Deploy: Unable to check for updates', err);
-//		});
+		//		$ionicDeploy.check().then(function (hasUpdate) {
+		//			$scope.log('Ionic Deploy: Update available: ' + hasUpdate);
+		//			$scope.hasUpdate = hasUpdate;
+		//			if(hasUpdate) {
+		//				$ionicActionSheet.show({
+		//					titleText: 'There is an update available',
+		//					buttons: [
+		//						{ text: 'Update Now' }
+		//					],
+		//					buttonClicked: function(index) {
+		//						$location.path('/menu/tabs/settings');
+		//					},
+		//					cancelText: 'Later',
+		//					cancel: function() {
+		//						return true;
+		//					}
+		//				});
+		//			}
+		//		}, function (err) {
+		//			$scope.log('Ionic Deploy: Unable to check for updates', err);
+		//		});
 	});
-	
+
 	$scope.audio = {
 		MessageMessage: {
 			filename: null
@@ -53,7 +53,7 @@ angular.module('greyback.controllers', [])
 	$scope.showMenu = function () {
 		$ionicSideMenuDelegate.toggleLeft();
 	};
-	
+
 	$scope.showRightMenu = function () {
 		$ionicSideMenuDelegate.toggleRight();
 	};
@@ -112,13 +112,13 @@ angular.module('greyback.controllers', [])
 	$scope.playVideo = function (playerId) {
 		document.getElementById(playerId).play();
 	};
-	
+
 	$scope.trust = function (snippet) {
 		return $sce.trustAsHtml(snippet);
 	};
 })
 
-.controller('HomeController', function ($scope, $q, $ionicModal, $timeout, $ionicSlideBoxDelegate, articles, headers, ImgCache, NewsService) {
+.controller('HomeController', function ($scope, $q, $ionicModal, $timeout, $ionicSlideBoxDelegate, articles, headers, ImgCache, NewsService, PtrService) {
 	console.log('HomeController');
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
@@ -163,23 +163,29 @@ angular.module('greyback.controllers', [])
 
 	$scope.update = function () {
 		console.log('HomeController.update');
-		//var headersPromise = NewsService.update('headers');
+		var headersPromise = NewsService.update('headers');
 		var newsPromise = NewsService.update('articles');
-		
-		newsPromise.then(function(data) {
-			$scope.articles = data;
-			$scope.$broadcast('scroll.refreshComplete');
-		});
 
-//		$q.all([headersPromise, newsPromise]).then(function (data) {
-//			$scope.headers = data[0];
-//			$scope.articles = data[1];
-//			$scope.$broadcast('scroll.refreshComplete');
-//			$ionicSlideBoxDelegate.update();
-//		});
+		//		newsPromise.then(function(data) {
+		//			$scope.articles = data;
+		//			$scope.$broadcast('scroll.refreshComplete');
+		//		});
+
+		$q.all([headersPromise, newsPromise]).then(function (data) {
+			console.log(data);
+			$scope.headers = data[0];
+			$scope.articles = data[1];
+			$scope.$broadcast('scroll.refreshComplete');
+			setTimeout(function () {
+				$ionicSlideBoxDelegate.update();
+			}, 0);
+		});
 	}
-	
-	//$scope.update();
+
+	$scope.$on("$ionicView.loaded", function () {
+		console.log("View loaded! Triggering PTR");
+		PtrService.triggerPtr('home_pull');
+	});
 })
 
 .controller('NewsController', function ($scope, $sce, article) {
@@ -190,7 +196,7 @@ angular.module('greyback.controllers', [])
 	console.log('MessagesController');
 	$scope.series = series;
 	$scope.latestMessage = MessagesService.latestMsg();
-	
+
 	$scope.update = function () {
 		console.log('SeriesController.update');
 		var seriesPromise = MessagesService.update();
@@ -201,14 +207,14 @@ angular.module('greyback.controllers', [])
 			$scope.$broadcast('scroll.refreshComplete');
 		});
 	}
-	
+
 	$scope.update();
-	
+
 	$scope.selectedSeries = null;
 	$scope.sermons = [];
 	if (typeof $stateParams.seriesIndex !== 'undefined') {
 		$scope.selectedSeries = $scope.series[$stateParams.seriesIndex];
-		MessagesService.getSeries($scope.selectedSeries.id).then(function(data) {
+		MessagesService.getSeries($scope.selectedSeries.id).then(function (data) {
 			$scope.sermons = data;
 		});
 	}
@@ -223,13 +229,13 @@ angular.module('greyback.controllers', [])
 	console.log('CalendarController');
 	console.log(events);
 	$scope.events = events;
-	$scope.dividerFunction = function(key) {
+	$scope.dividerFunction = function (key) {
 		return key;
 	}
-	
+
 	if (typeof $stateParams.eventIndex !== 'undefined') {
 		$scope.selectedSeries = $scope.series[$stateParams.seriesIndex];
-		MessagesService.getSeries($scope.selectedSeries.id).then(function(data) {
+		MessagesService.getSeries($scope.selectedSeries.id).then(function (data) {
 			$scope.sermons = data;
 		});
 	}
@@ -242,7 +248,7 @@ angular.module('greyback.controllers', [])
 .controller('StaffController', function ($scope, $stateParams, $location, StaffService, departments) {
 	console.log('StaffController');
 	$scope.departments = departments;
-	StaffService.update().then(function(data) {
+	StaffService.update().then(function (data) {
 		console.log(data);
 		$scope.departments = departments;
 	});
