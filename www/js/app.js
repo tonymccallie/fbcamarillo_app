@@ -238,7 +238,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	.state('menu.tabs.events', {
 		url: '/events',
 		views: {
-			'tab-giving': {
+			'tab-events': {
 				templateUrl: 'templates/events.html',
 				controller: 'CalendarController'
 			}
@@ -254,7 +254,7 @@ angular.module('greyback', ['ionic', 'ngCordova', 'ImgCache', 'ionic.service.cor
 	.state('menu.tabs.event', {
 		url: '/event/:eventIndex',
 		views: {
-			'tab-giving': {
+			'tab-events': {
 				templateUrl: 'templates/event.html',
 				controller: 'EventController'
 			}
