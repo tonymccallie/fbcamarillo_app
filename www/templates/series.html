@@ -4,6 +4,7 @@
 		<div class="scaleVid ratio16x9">
 			<a ng-if="latestMessage.MessageSeries.MediaImage.filename.length > 0" ui-sref="menu.tabs.latest_sermon">
 				<img img-cache ic-src="{{imageDir+latestMessage.MediaVideo.preview}}/width:800/height:450/crop:true/zoom:auto/{{latestMessage.MediaVideo.preview}}" style="width: 100%;" />
+				<img id="play_btn" src="img/play.png">
 				<h4 class="latest_title">{{latestMessage.MessageMessage.title}}</h4>
 			</a>
 		</div>

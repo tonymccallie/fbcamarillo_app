@@ -7794,6 +7794,12 @@ div.slider-pager {
   .xtab-item .icon.icon_giving {
     background-image: url('../img/fbc_app_icon_giving.png'); }
 
+#play_btn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
 .title-image {
   margin-top: 7px;
   height: 30px; }
