@@ -18,7 +18,7 @@
 		<div class="threeleaf-separator">
 			<span class="threeleaf">oy</span>NEWS & EVENTS</div>
 		<div class="padding">
-			<div class="community_post" ng-repeat="article in articles">
+			<div class="community_post" ng-repeat="article in articles | limitTo: 3">
 				<div class="scaleVid ratio16x9">
 					<a ui-sref="menu.tabs.article({articleIndex: $index, category: 'articles'})">
 						<div ng-switch on="article.NewsArticle.media_video_id">

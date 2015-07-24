@@ -3,6 +3,7 @@
         "/Users/tonymccallie/Sites/gracepoint_app/www/lib/localforage/src/drivers/websql.js",
         "/Users/tonymccallie/Sites/gracepoint_app/www/js/controllers.js",
         "/Users/tonymccallie/Sites/gracepoint_app/www/lib/localforage/src/drivers/indexeddb.js",
-        "/Users/tonymccallie/Sites/gracepoint_app/www/lib/ionic-service-deploy/ionic-deploy.js"
+        "/Users/tonymccallie/Sites/gracepoint_app/www/lib/ionic-service-deploy/ionic-deploy.js",
+        "/Users/tonymccallie/Sites/fbc_app/platforms/ios/www/lib/angular-ui-router/src/view.js"
     ]
 }
