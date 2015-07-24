@@ -227,7 +227,7 @@ angular.module('greyback.services', [])
 	self.getSeries = function (seriesId) {
 		console.log('MessagesService.getSeries');
 		var deferred = $q.defer();
-		var promise = $http.get(DOMAIN + '/ajax/plugin/message/message_messages/json/series:' + seriesId)
+		var promise = $http.get(DOMAIN + '/ajax/plugin/message/message_messages/json/category:1/series:' + seriesId)
 			.success(function (response, status, headers, config) {
 			if (response.status === 'SUCCESS') {
 				currentSeries = [];
